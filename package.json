@@ -1,0 +1,22 @@
+{
+  "name": "local-filesystem-explorer",
+  "version": "1.0.0",
+  "description": "THis is a very simple file explorer.",
+  "main": "index.php",
+  "scripts": {
+    "test": "\"jest --coverage\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://code.assemblerschool.com/eloy-rodriguez/Local-FileSystem-explorer.git"
+  },
+  "keywords": [
+    "file",
+    "explorer",
+    "mega",
+    "drive",
+    "cloud"
+  ],
+  "author": "Eloy AGrandesR",
+  "license": "ISC"
+}
