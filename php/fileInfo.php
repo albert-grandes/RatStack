@@ -5,8 +5,10 @@ $_POST["path"] = "../root/Documents/Work/TODO.txt";
 if(is_dir($_POST["path"])) {
 
 } else {
-    $obj->name = explode(".", basename($_POST["path"]))[0];
-    $obj->type = explode(".", basename($_POST["path"]))[1];
+    $fullname = explode(".", basename($_POST["path"]));
+
+    $obj->name = $fullname[0];
+    $obj->type = end(array_keys(($fullname)));
     $obj->path = $_POST["path"];
     $obj->size = byteToMeasure(filesize($_POST["path"]));
     $obj->lastMod = date("F d Y H:i:s.", filemtime($_POST["path"]));
