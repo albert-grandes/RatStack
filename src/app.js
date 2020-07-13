@@ -1,7 +1,7 @@
 /******************************************************************
 Index:
     2. Automatic run
-    4. nav
+    4. nav treefolder
 *******************************************************************/
 
 /************************************************************************************/
@@ -11,18 +11,29 @@ $(document).ready(function(){
     var requestFolderTree = $.ajax("php/rootStruct.php")
     .done(function(data) {
         addFolders("folderTree", data); //Recursive function
-        function addFolders(id, object) {
-            for (key in object) {
-                console.log(key);
+        function addFolders(id, fobject) {
+            for (key in fobject) {
+                let pathDir = fobject[key]["path"];
+                console.log(fobject[key]["path"]);
                 let folder = $("<li>")
                 .append(
-                    $("<span>", {class: "folder", text: key}))
+                    $("<span>", {class: "folder", text: key})
+                    .attr("data-path", fobject[key]["path"])
+                    .click(function(){
+                        //In this place we can make and ajax that change the content of folderScreen__files and folder                        
+                        $.post("php/dirStruct.php", {
+                            path: pathDir
+                        })
+                        .done(function(data) {
+                            console.log(data)
+                        })
+                    }))
                 .append(
                     $("<ul>", {class: "nested", id: `id${key}`})
                 )
                 console.log()
                 $(`#${id}`).append(folder)
-                addFolders(`id${key}`, object[key]["content"])
+                addFolders(`id${key}`, fobject[key]["content"])
             }
         }
         treeFolder()
@@ -40,7 +51,7 @@ $(document).ready(function(){
 /************************************************************************************/
 
 /************************************************************************************/
-// S> 4. nav
+// S> 4. nav treefolder
 function treeFolder() {
     console.log("treeFolder function is active! ")
     $(".folder").click(function(){
@@ -50,5 +61,5 @@ function treeFolder() {
         $(this).toggleClass("folder-down");
     })
 }
-//E> 4. nav
+//E> 4. nav treefolder
 /************************************************************************************/
