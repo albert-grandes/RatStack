@@ -10,12 +10,7 @@ $(document).ready(function(){
     //We have to import the data of tree folder!
     var requestFolderTree = $.ajax("php/rootStruct.php")
     .done(function(data) {
-        $("#folderTree")
-        $("#actualFolder").html(data);
-        console.log(data);
         addFolders("folderTree", data); //Recursive function
-        
-        alert( "success" );
         function addFolders(id, object) {
             for (key in object) {
                 console.log(key);
@@ -27,17 +22,16 @@ $(document).ready(function(){
                 )
                 console.log()
                 $(`#${id}`).append(folder)
-                console.log(object[key]["content"])
                 addFolders(`id${key}`, object[key]["content"])
-                treeFolder()
             }
         }
+        treeFolder()
     })
     .fail(function() {
         alert( "error" );
     })
     .always(function() {
-        alert( "complete" );
+        /*alert( "complete" );*/
     });
     //We execute the tree folder function
     //treeFolder()

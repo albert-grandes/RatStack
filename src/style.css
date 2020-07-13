@@ -13,23 +13,85 @@ body {
 }
 main {
     flex: 1;
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+}
+section {
+    flex: 1;
 }
 
 /************************************************************************************/
 /*S> 4. nav */
 .agr__nav {
+    width: 100%;
     box-shadow: 0px 10px 10px 10px rgba(110,110,110,1);
+
+    z-index: 700;
 }
 .agr__folderNav {
     background-color: whitesmoke;
     border-right: thin solid black;
+    box-shadow: 10px 0px 10px 10px rgba(110,110,110,1);
+
+    z-index: 600;
+}
+.agr__folderNav li {
+    min-width: 100px;
 }
 /*E> 4. nav */
 /************************************************************************************/
-.agr__folderNav {
-    box-shadow: 10px 0px 10px 10px rgba(110,110,110,1);
-}
 
+/************************************************************************************/
+/* S> 5. Actual folder screen */
+.agr__folderScreen {
+    flex: 1;
+}
+    .folderScreen__options {
+        width: 100%;
+        margin: 0px;
+
+        background-color: whitesmoke;
+        box-shadow: 0px 10px 10px 10px rgba(110,110,110,1);
+
+        z-index: 500;
+    }
+    .folderScreen__files {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        
+
+    }
+    .files__file {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+
+        border-radius: 25px;
+        background-color: whitesmoke;
+
+        max-width: 500px;
+        min-width: 250px;
+        max-height: 500px;
+        min-height: 250px;
+        margin: 20px;
+        box-shadow: inset 0px 0px 10px 10px rgba(110,110,110,1);
+    }
+    .files_file:focus {
+        border: 2px solid red;
+    }
+    .files__file > div {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+    .files__file > span {
+        width: 100%;
+        text-align: center;
+    }
+/* S> 5. Actual folder screen */
+/************************************************************************************/
 
 /************************************************************************************/
   /*S> 8. Folder Tree */
@@ -38,8 +100,11 @@ main {
 /* Remove margins and padding from the parent ul */
 #folderTree {
     list-style-type: none; /* Remove default bullets */
-    margin: 0;
-    padding: 0;
+    margin-block-start: 0em;
+    margin-block-end: 0em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 0px;
 }
 #folderTree li {
     list-style-type: none;
