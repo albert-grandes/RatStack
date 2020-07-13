@@ -33,6 +33,7 @@
             </ul>
         </nav>
         <section>
+            <div id="actualFolder"></div>
         </section>
         <aside>
         </aside>

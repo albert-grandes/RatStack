@@ -7,6 +7,19 @@ Index:
 /************************************************************************************/
 // S> 2. Automatic run
 $(document).ready(function(){
+    //We have to import the data of tree folder!
+    var requestFolderTree = $.ajax("php/rootStruct.php")
+    .done(function(data) {
+        $("#folderTree")
+        $("#actualFolder").html(data);
+        alert( "success" );
+    })
+    .fail(function() {
+        alert( "error" );
+    })
+    .always(function() {
+        alert( "complete" );
+    });
     //We execute the tree folder function
     treeFolder()
 })
@@ -22,15 +35,6 @@ function treeFolder() {
         $(this).next(".nested").toggleClass("active");
         $(this).toggleClass("folder-down");
     })
-}/*
-var toggler = document.getElementsByClassName("caret");
-var i;
-
-for (i = 0; i < toggler.length; i++) {
-  toggler[i].addEventListener("click", function() {
-      
-      //this.parentElement.querySelector(".nested").classList.toggle("active");
-     
-  });*/
+}
 //E> 4. nav
 /************************************************************************************/
