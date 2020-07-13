@@ -16,7 +16,4 @@ function pushJSON($f, &$obj) {
     }
 }
 
-
-
-echo "<pre>";
-var_dump($json);
+echo json_encode($json);
