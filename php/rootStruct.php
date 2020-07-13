@@ -17,5 +17,5 @@ function pushJSON($f, &$obj) {
         if(is_dir($pathRaw."/".$n)) pushJSON(dir($pathRaw."/".$n), $obj->$pathStr->content);
     }
 }
-
+header('Content-Type: application/json');
 echo json_encode($json);

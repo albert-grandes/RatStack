@@ -12,7 +12,26 @@ $(document).ready(function(){
     .done(function(data) {
         $("#folderTree")
         $("#actualFolder").html(data);
+        console.log(data);
+        addFolders("folderTree", data); //Recursive function
+        
         alert( "success" );
+        function addFolders(id, object) {
+            for (key in object) {
+                console.log(key);
+                let folder = $("<li>")
+                .append(
+                    $("<span>", {class: "folder", text: key}))
+                .append(
+                    $("<ul>", {class: "nested", id: `id${key}`})
+                )
+                console.log()
+                $(`#${id}`).append(folder)
+                console.log(object[key]["content"])
+                addFolders(`id${key}`, object[key]["content"])
+                treeFolder()
+            }
+        }
     })
     .fail(function() {
         alert( "error" );
@@ -21,7 +40,7 @@ $(document).ready(function(){
         alert( "complete" );
     });
     //We execute the tree folder function
-    treeFolder()
+    //treeFolder()
 })
 // E> 2. Automatic run
 /************************************************************************************/
@@ -32,6 +51,7 @@ function treeFolder() {
     console.log("treeFolder function is active! ")
     $(".folder").click(function(){
         console.log("We are working!");
+        console.log($(this).next().html());
         $(this).next(".nested").toggleClass("active");
         $(this).toggleClass("folder-down");
     })

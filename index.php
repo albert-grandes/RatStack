@@ -10,6 +10,7 @@
     <main class="d-flex flex-wrap align-items-stretch">
         <nav class="p-5 agr__folderNav">
             <ul id="folderTree">
+                <!--
                 <li><span class="folder">Private</span>
                     <ul class="nested">
                     <li>Water</li>
@@ -30,6 +31,7 @@
                     </li>
                     </ul>
                 </li>
+                -->
             </ul>
         </nav>
         <section>
