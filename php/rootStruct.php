@@ -10,10 +10,11 @@ function pushJSON($f, &$obj) {
     
     $obj->$pathStr = new stdClass();
     $obj->$pathStr->path = $pathRaw;
+    $obj->$pathStr->content = new stdClass();
 
     while(($n = $f->read()) !== false) {
         if($n == "." || $n == "..") continue;
-        if(is_dir($pathRaw."/".$n)) pushJSON(dir($pathRaw."/".$n), $obj->$pathStr);
+        if(is_dir($pathRaw."/".$n)) pushJSON(dir($pathRaw."/".$n), $obj->$pathStr->content);
     }
 }
 
