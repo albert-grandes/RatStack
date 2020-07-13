@@ -9,6 +9,7 @@ function pushJSON($f, &$obj) {
     $pathStr = (string)$pathArr[count($pathArr)-1];
     
     $obj->$pathStr = new stdClass();
+    $obj->$pathStr->path = $pathRaw;
 
     while(($n = $f->read()) !== false) {
         if($n == "." || $n == "..") continue;

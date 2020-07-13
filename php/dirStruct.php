@@ -1,11 +1,13 @@
 <?php
 $json = new stdClass();
-$path = dir("../".$_POST["path"]);
 
-while(($n = $path->read()) !== false) {
+$dir = dir($_POST["path"]);
+
+while(($n = $dir->read()) !== false) {
     if($n == "." || $n == "..") continue;
     $f = new stdClass();
-    $f->type = filetype($path->path."/".$n);
+    $f->type = filetype($dir->path."/".$n);
+    $f->path = $dir->path."/".$n;
 
     $json->$n = $f;
 }
