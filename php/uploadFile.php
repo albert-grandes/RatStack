@@ -1,5 +1,4 @@
 <?php
-$_POST["path"] = "../root/Documents";
-$_POST["name"] = "patata";
+$_POST["path"] = "../root/Images";
 
-mkdir($_POST["path"]."/".$_POST["name"]);
+echo basename($_FILES["file"]["name"]);

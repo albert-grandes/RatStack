@@ -7,6 +7,10 @@
     <?php
         require "html/header.php";
     ?>
+    <form action="php/uploadFile.php" method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type="submit" value="send">
+    </form>
     <main class="d-flex flex-wrap align-items-stretch">
         <nav class="p-5 agr__folderNav">
             <ul id="folderTree">
