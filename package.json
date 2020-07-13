@@ -18,5 +18,9 @@
     "cloud"
   ],
   "author": "Eloy AGrandesR",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^4.5.0",
+    "jquery": "^3.5.1"
+  }
 }

@@ -7,8 +7,17 @@
     <?php
         require "html/header.php";
     ?>
+<<<<<<< HEAD
     <main class="d-flex">
         <nav class="agr__folderNav">
+=======
+    <form action="php/uploadFile.php" method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type="submit" value="send">
+    </form>
+    <main class="d-flex flex-wrap align-items-stretch">
+        <nav class="p-5 agr__folderNav">
+>>>>>>> 246fb7b30909b51242d10220624f4b5baab0d237
             <ul id="folderTree">
                 <!--
                 <li><span class="folder">Private</span>
