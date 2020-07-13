@@ -7,7 +7,7 @@ if(is_dir($_POST["path"])) {
 } else {
     $obj->name = explode(".", basename($_POST["path"]))[0];
     $obj->type = explode(".", basename($_POST["path"]))[1];
-    $obj->content = file_get_contents($_POST["path"]);
+    $obj->path = $_POST["path"];
     $obj->size = byteToMeasure(filesize($_POST["path"]));
     $obj->lastMod = date("F d Y H:i:s.", filemtime($_POST["path"]));
 }
