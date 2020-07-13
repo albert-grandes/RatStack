@@ -12,4 +12,5 @@ while(($n = $dir->read()) !== false) {
     $json->$n = $f;
 }
 
+header("Content-Type: application/json");
 echo json_encode($json);
