@@ -26,11 +26,15 @@ main {
 }
 /*E> 4. nav */
 /************************************************************************************/
-
+.agr__folderNav {
+    box-shadow: 10px 0px 10px 10px rgba(110,110,110,1);
+}
 
 
 /************************************************************************************/
   /*S> 8. Folder Tree */
+
+  
 /* Remove margins and padding from the parent ul */
 #folderTree {
     list-style-type: none; /* Remove default bullets */
