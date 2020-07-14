@@ -1,28 +1,61 @@
 # Shopping site with PHP
-###### This project main objective is to transform an already made shopping-wizard in JS to a full shopping site with full PHP. The developers of the original project are refered at the end of this document.
+###### This project main objective is create a system file explorer that allows the user to navigate, create directories and upload files in the same way as he would in his usual operating system.
 
-## Main objectives
-* Create a main page for the site to show all the products in catalog.json, which will already have a list of default products.
-* Create a form validation system with PHP or use a PHP library to validate forms.
-* Create an admin section to allow site managers to add new products, view users information and add new users.
-* Manage all the data with 3 main JSON files and import the data with PHP.
+## The pill 🚀
+This project main objective is create a **system file explorer** that allows the user to **navigate**, **create** directories and **upload** files in the same way as he would in his usual operating system.
+The file explorer is a tool that **allows** you to directly **view** and **manipulate** the files and directories associated with a path, so you must take into account from which path the user starts and which path they can access.
+In our team we try to do a minimalist and functional **file system** based in a simple division in **frontend** and **backend** that one (**backend**) is the responsable to send the file and folder data in **JSON** format and the other (**frontend**) is in charge to transform this information in something visual for the user.
 
-## Folder structure
-In the main folder we found 3 folders and 4 files:
-* **JSON** > This folder contains the JSON files used to store data.
-* **original-project** > This folder contains the original files from the JS project.
-* **admin** > This folder allow managers acces a different HTML from where they can have acces to manager tools. (*www.domain.com/admin*)
-* **img** > This folder contains all the local images used for this project.
-* index.php > This file contains the main page for the project website.
-* style.css > This file contains the main CSS rules for the project website.
-* script.js > This file contains all the JS scripts used in the project website.
-* README.MD > This text file.
+
+## Main objectives 📋
+* Understand how the file system works.
+* Improve your knowledge in PHP (special the use of files inside a server)
+* Improve your knowledge in HTML, CSS & Javascript (the presentation and use of data provided by the server)
+* Improve your knowledge in logic and programming.
+
+
+### Folder organization 📂
+- Local-FilseSystem-explorer - The root of the project
+    - data - The folder that contains the php of exercises of the pill.
+        - _employees.csv_
+        - _users.csv_
+    - html - The folder that contains the php of basic elements in html to build index.php
+        - _head.php_
+        - _header.php_
+    - php - This folder contains all the php of the page that make orders in the server side.
+        - _deleteFolder.php_
+        - _dirStruct.php_
+        - _fileInfo.php_
+        - _newFolder.php_
+        - _openFile.php_
+        - _renameFolder.php_
+        - _rootStruct.php_
+        - _uploadFile.php_
+    - src - This folder contains the personal _js- and _css_ of the page.
+        - _style.css_
+        - _app.js_
+    - node_modules - This is a folder of NPM. Inside we have JQuery and Bootstrap dependencies. [Inside .gitignore]
+    - _.gitignore_
+    - _index.php_
+    - _README.md_
+    - _package.json_
+    - _package-lock.json_
+
+## Build with 🛠️
+
+_This are the tools of external that I use_
+
+* [NPM](https://www.npmjs.com/) - The package manager
+* [GIT](https://git-scm.com/) - For a good control of project version.
+* [JQuery](https://jquery.com/) - For ajax request to php.
+
+
+## Authors ✒️
+* **A.Grandes.R** - *All the work of design and code* - [Repository](https://code.assemblerschool.com/albert-grandes/)
+* **Eloy Rodriguez** - *All the work of design and code* - [Repository](https://code.assemblerschool.com/eloy-rodriguez/)
+
+
 
 ## Additional information
 #### Git structure
 This project has 2 main branches, develop and master. All changes are pushed into develop and at the end of the day if everything is correct we merge develop to master.
-#### Project members
-The crew members are @EloyRDev, @videnacry, @Yulia-bel, @sayeed0209.
-
-## Footer
-Original project developer are @Constantine-32, @GuilhermeCarra, @AlejandroPalomes, @carlotagallart.
