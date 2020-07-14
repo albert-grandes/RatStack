@@ -80,54 +80,39 @@ function showFolder(pathDir) {
     .done(function(data) {
         console.log(data);
         //First we load the header of the table! :)
-        $("#folderStruct").empty()
-        .append(
-            $("<div>", {id:"fs-header"})
-            .append(
-                $("<span>")
-            )
-            .append(
-                $("<span>", {text:"Name"})
-            )
-            .append(
-                $("<span>", {text:"Size"})
-            )
-            .append(
-                $("<span>", {text:"Creation"})
-            )
-            .append(
-                $("<span>", {text:"Last Mod."})
-            )
-        )
+        $("#fs-content").empty()
         for (file in data) {
             if(data[file]["type"]=="dir") {
                 var classFile = "fs-card-dir";
             } else {
                 var classFile = "fs-card-file";
             }
-            $("#folderStruct")
-            .append(
-            $("<div>", {id:"fs-card", class: classFile})
-            .append(
-                $("<span>")
+            $.post("php/fileInfo.php", {
+                path: pathDir + "/" + file
+            })
+            .always(fileData => {
+                $("#fs-content")
                 .append(
-                    /*<img src="folder.png"></img>*/
-                    $("<img>",{src:"folder.png"})
+                $("<div>", {class:"fs-card " + classFile})
+                .append(
+                    $("<span>")
+                    .append(
+                        /*<img src="folder.png"></img>*/
+                        $("<img>",{src: "images/" + fileData.type + ".png"})
+                    )
                 )
-            )
-            .append(
-                $("<span>", {text:file})
-            )
-            .append(
-                $("<span>", {text:"Size"})
-            )
-            .append(
-                $("<span>", {text:"Creation"})
-            )
-            .append(
-                $("<span>", {text:"Last Mod."})
-            )
-        )
+                .append(
+                    $("<span>", {text: fileData.name }).append(
+                        $("<span>", {class: "fsc-ext", text: fileData.type.toLowerCase() })
+                    )
+                )
+                .append(
+                    $("<span>", {text: fileData.size})
+                )
+                .append(
+                    $("<span>", {text: fileData.lastMod})
+                ))
+            })
         }
         /*
         addFile("folderStruct", data); //Recursive function

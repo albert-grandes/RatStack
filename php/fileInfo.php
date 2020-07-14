@@ -1,14 +1,17 @@
 <?php
 $obj = new stdClass();
-$_POST["path"] = "../root/Documents/Work/TODO.txt";
 
 if(is_dir($_POST["path"])) {
-
+    $obj->name = basename($_POST["path"]);
+    $obj->type = "folder";
+    $obj->path = $_POST["path"];
+    $obj->size = byteToMeasure(filesize($_POST["path"]));
+    $obj->lastMod = date("F d Y H:i:s.", filemtime($_POST["path"]));
 } else {
     $fullname = explode(".", basename($_POST["path"]));
 
     $obj->name = $fullname[0];
-    $obj->type = end(array_keys(($fullname)));
+    $obj->type = $fullname[1];
     $obj->path = $_POST["path"];
     $obj->size = byteToMeasure(filesize($_POST["path"]));
     $obj->lastMod = date("F d Y H:i:s.", filemtime($_POST["path"]));

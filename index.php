@@ -29,21 +29,15 @@
             </ul>
         </div>
         <div id="m-folder">
-            <h4>You are in <span>Documents</span> folder</h4>
             <div id="folderStruct">
                 <div id="fs-header">
                     <span></span>
                     <span>Name</span>
                     <span>Size</span>
-                    <span>Creation</span>
                     <span>Last Mod.</span>
                 </div>
-                <div class="fs-card">
-                    <span><img src="folder.png"></span>
-                    <span>Potato<span class="card-name-extension"></span></span>
-                    <span>45B</span>
-                    <span>24/12/2000</span>
-                    <span>05/01/2001</span>
+                <div id="fs-content">
+                    
                 </div>
             </div>
         </div>
