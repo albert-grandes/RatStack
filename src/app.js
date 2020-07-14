@@ -89,7 +89,7 @@ function showFolder(pathDir) {
                     $("<span>")
                     .append(
                         /*<img src="folder.png"></img>*/
-                        $("<img>",{src: "images/" + fileData.type + ".png"})
+                        $("<img>",{src: "images/" + fileData.type.toLowerCase() + ".png"})
                     )
                 )
                 .append(
