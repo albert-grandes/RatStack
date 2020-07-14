@@ -1,15 +1,19 @@
 <?php
 $json = new stdClass();
 
-$dir = dir($_POST["path"]);
+for($i = 0; $i < 2; $i++) {
+    if($i == 0) $skip = "file";
+    else $skip = "folder";
 
-while(($n = $dir->read()) !== false) {
-    if($n == "." || $n == "..") continue;
-    $f = new stdClass();
-    $f->type = filetype($dir->path."/".$n);
-    $f->path = $dir->path."/".$n;
-
-    $json->$n = $f;
+    $dir = dir($_POST["path"]);
+    while(($n = $dir->read()) !== false) {
+        if($n == "." || $n == ".." || filetype($dir->path."/".$n) == $skip) continue;
+        $f = new stdClass();
+        $f->type = filetype($dir->path."/".$n);
+        $f->path = $dir->path."/".$n;
+    
+        $json->$n = $f;
+    }
 }
 
 header("Content-Type: application/json");
