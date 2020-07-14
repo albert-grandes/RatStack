@@ -27,7 +27,7 @@ function byteToMeasure($b) : string {
         $i++;
     }
 
-    return $m." ".$measure[$i];
+    return round($m)." ".$measure[$i];
 }
 
 header("Content-Type: application/json");
