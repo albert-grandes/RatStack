@@ -1,103 +1,100 @@
-/******************************************************************
-Index:
-    4. nav
-    8. Folder Tree
-*******************************************************************/
+/*MAIN STRUCTURE RULES*/
 
-/************************************************************************************/
-/*S> 4. nav */
-body {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+:root {
+    --main-color: rgb(170, 199, 154); 
 }
-main {
-    flex: 1;
-    display: flex;
-    flex-direction: row;
+
+* {
+    font-family: "Work Sans", Helvetica, Arial, sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: rgb(14, 14, 14);
+    height: 100vh;
     width: 100vw;
 }
-section {
-    flex: 1;
+
+header {
+    display: flex;
+    height: 10%;
+
+    background-color: rgb(26, 26, 26);
+    color: rgb(219, 245, 205);
+
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
 }
 
-/************************************************************************************/
-/*S> 4. nav */
-.agr__nav {
+header img {
+    height: 100%;
+    filter: invert(100%);
+}
+
+header h1 {
+    font-weight: 400;
+}
+
+nav {
+    display: flex;
+    height: 7%;
+}
+
+main {
+    display: flex;
+    height: 77%;
     width: 100%;
-    box-shadow: 0px 10px 10px 10px rgba(110,110,110,1);
 
-    z-index: 700;
+    background-color: rgb(37, 37, 37);
+    color: rgb(247, 247, 247);
 }
-.agr__folderNav {
-    background-color: whitesmoke;
-    border-right: thin solid black;
-    box-shadow: 10px 0px 10px 10px rgba(110,110,110,1);
 
-    z-index: 600;
+main h4 {
+    color: var(--main-color);
+
+    font-weight: 400;
+    font-size: 18px;
+    text-align: center;
+
+    padding: 5px;
 }
-.agr__folderNav li {
-    min-width: 100px;
+
+#m-structure {
+    width: 15%;
+    background-color: rgb(27, 27, 27);
 }
-/*E> 4. nav */
-/************************************************************************************/
 
-/************************************************************************************/
-/* S> 5. Actual folder screen */
-.agr__folderScreen {
-    flex: 1;
+#m-folder {
+    width: 75%;
 }
-    .folderScreen__options {
-        width: 100%;
-        margin: 0px;
 
-        background-color: whitesmoke;
-        box-shadow: 0px 10px 10px 10px rgba(110,110,110,1);
+#m-details {
+    width: 20%;
+    background-color: rgb(27, 27, 27);
+}
 
-        z-index: 500;
-    }
-    .folderScreen__files {
-        display: flex;
-        flex-wrap: wrap;
-        flex-direction: row;
-        
+footer {
+    display: flex;
+    height: 6%;
 
-    }
-    .files__file {
-        display: flex;
-        flex-direction: column;
-        padding: 20px;
+    color: var(--main-color);
+    letter-spacing: 2px;
+    
+    justify-content: center;
+    align-items: center;
+}
 
-        border-radius: 25px;
-        background-color: whitesmoke;
+footer h6 {
+    font-weight: 400;
+    font-size: 13px;
+}
 
-        max-width: 500px;
-        min-width: 250px;
-        max-height: 500px;
-        min-height: 250px;
-        margin: 20px;
-        box-shadow: inset 0px 0px 10px 10px rgba(110,110,110,1);
-    }
-    .files_file:focus {
-        border: 2px solid red;
-    }
-    .files__file > div {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-    }
-    .files__file > span {
-        width: 100%;
-        text-align: center;
-    }
-/* S> 5. Actual folder screen */
-/************************************************************************************/
-
-/************************************************************************************/
-  /*S> 8. Folder Tree */
-
-  
-/* Remove margins and padding from the parent ul */
+/*FOLDER TREE RULES*/
 #folderTree {
     list-style-type: none; /* Remove default bullets */
     margin-block-start: 0em;
@@ -105,6 +102,7 @@ section {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     padding-inline-start: 0px;
+    margin-left: 20px;
 }
 #folderTree li {
     list-style-type: none;
@@ -119,7 +117,7 @@ section {
 /* Create the caret/arrow with a unicode, and style it */
 .folder::before {
     content: "\25B6";
-    color: black;
+    color: var(--main-color);
     display: inline-block;
     margin-right: 6px;
 }
@@ -132,11 +130,10 @@ section {
 /* Hide the nested list */
 .nested {
     display: none;
+    margin-left: 10px;
 }
 
 /* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
 .active {
     display: block;
 }
-/*E> 8. Folder Tree */
-/************************************************************************************/

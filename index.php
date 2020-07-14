@@ -1,25 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php
-    require "html/head.php";
-?>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RatStack</title>
+    <!--NPM Packages -->
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <!--PHP-Forms links-->
+    <link href="src/style.css" rel="stylesheet"/>
+    <script src="src/app.js"></script>
+</head>
 <body>
     <?php
         require "html/header.php";
     ?>
-<<<<<<< HEAD
-    <main class="d-flex">
-        <nav class="agr__folderNav">
-=======
-    <form action="php/uploadFile.php" method="post" enctype="multipart/form-data">
+    <!--<form action="php/uploadFile.php" method="post" enctype="multipart/form-data">
         <input type="file" name="file">
         <input type="submit" value="send">
-    </form>
+    </form>-->
+    <nav>
+
+    </nav>
+    <main>
+        <div id="m-structure">
+            <h4>Folders</h4>
+            <ul id="folderTree">
+
+            </ul>
+        </div>
+        <div id="m-folder">
+            <h4>You are in <span>Documents</span> folder</h4>
+        </div>
+        <div id="m-details">
+            <h4>Details</h4>
+        </div>
+    </main>
+    <?php
+        require "html/footer.php";
+    ?>
+    <!--
     <main class="d-flex flex-wrap align-items-stretch">
         <nav class="p-5 agr__folderNav">
->>>>>>> 246fb7b30909b51242d10220624f4b5baab0d237
             <ul id="folderTree">
-                <!--
                 <li><span class="folder">Private</span>
                     <ul class="nested">
                     <li>Water</li>
@@ -40,7 +62,7 @@
                     </li>
                     </ul>
                 </li>
-                -->
+               
             </ul>
         </nav>
         <section>
@@ -69,5 +91,6 @@
         <aside>
         </aside>
     </main>
+     -->
 </body>
 </html>
