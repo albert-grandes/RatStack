@@ -71,34 +71,16 @@ function showFolder(pathDir) {
     .done(function(data) {
         console.log(data);
         //First we load the header of the table! :)
-        $("#folderStruct").empty()
-        .append(
-            $("<div>", {id:"fs-header"})
-            .append(
-                $("<span>")
-            )
-            .append(
-                $("<span>", {text:"Name"})
-            )
-            .append(
-                $("<span>", {text:"Size"})
-            )
-            .append(
-                $("<span>", {text:"Creation"})
-            )
-            .append(
-                $("<span>", {text:"Last Mod."})
-            )
-        )
+        $("#fs-content").empty()
         for (file in data) {
             if(data[file]["type"]=="dir") {
                 var classFile = "fs-card-dir";
             } else {
                 var classFile = "fs-card-file";
             }
-            $("#folderStruct")
+            $("#fs-content")
             .append(
-            $("<div>", {id:"fs-card", class: classFile})
+            $("<div>", {class:"fs-card " + classFile})
             .append(
                 $("<span>")
                 .append(
