@@ -49,8 +49,9 @@ function loadTreeFolder() {
                         } else {
                             clicks = 0;
                             clearTimeout(timer);
-                            showFolder(pathDir);
-                            
+                            $(".folder_active").removeClass("folder_active")
+                            clickThis.addClass("folder_active");
+                            showFolder(pathDir);                           
                         }
                     })
                     .dblclick(function(e){
@@ -90,7 +91,7 @@ function showFolder(pathDir) {
             $.post("php/fileInfo.php", {
                 path: pathDir + "/" + file
             })
-            .always(fileData => {
+            .done(fileData => {
                 $("#fs-content")
                 .append(
                 $("<div>", {class:"fs-card " + classFile})
