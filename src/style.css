@@ -242,3 +242,24 @@ footer h6 {
 #folderStruct > div > span:nth-child(5) {
     width: 21.5%;
 }
+@media (max-width: 850px) {
+    #m-structure, #m-details {
+        display: none;
+    }
+    * {
+        height: unset !important;
+    }
+    header > img {
+        height: 8vh !important;
+        filter: invert(100%);
+    }
+    body {
+        min-height: 100vh !important;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh !important;
+    }
+    main {
+        flex: 1;
+    }
+}

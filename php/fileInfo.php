@@ -15,6 +15,13 @@ if(is_dir($_POST["path"])) {
     $obj->path = $_POST["path"];
     $obj->size = byteToMeasure(filesize($_POST["path"]));
     $obj->lastMod = date("F d Y H:i:s.", filemtime($_POST["path"]));
+    $obj->mtime = filemtime($_POST["path"]); //Gets file modification time
+    $obj->ctime = filectime($_POST["path"]); //Gets file modification time
+    $obj->atime = fileatime($_POST["path"]); //Gets last access time of file
+    $imageArray = array("png","jpeg","jpg","gif");
+    if(in_array($fullname[1], $imageArray)) {
+        $obj->imgSize = getimagesize($_POST["path"]);
+    }
 }
 
 function byteToMeasure($b) : string {
