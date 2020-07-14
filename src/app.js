@@ -8,14 +8,14 @@ Index:
 // S> 2. Automatic run
 $(document).ready(function(){
     //We have to import the data of tree folder!
-    var requestFolderTree = $.ajax("php/rootStruct.php")
+    $.ajax("php/rootStruct.php")
     .done(function(data) {
         addFolders("folderTree", data); //Recursive function
         function addFolders(id, fobject) {
             for (key in fobject) {
-                let pathDir = fobject[key]["path"];
+                const pathDir = fobject[key]["path"];
                 console.log(fobject[key]["path"]);
-                let folder = $("<li>")
+                const folder = $("<li>")
                 .append(
                     $("<span>", {class: "folder", text: key})
                     .attr("data-path", fobject[key]["path"])
@@ -31,7 +31,6 @@ $(document).ready(function(){
                 .append(
                     $("<ul>", {class: "nested", id: `id${key}`})
                 )
-                console.log()
                 $(`#${id}`).append(folder)
                 addFolders(`id${key}`, fobject[key]["content"])
             }
