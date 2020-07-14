@@ -1,8 +1,16 @@
 /******************************************************************
 Index:
+    0. Variables
     2. Automatic run
     4. nav treefolder
 *******************************************************************/
+
+/************************************************************************************/
+//S> Variables
+let clicks = 0;
+let timer;
+//E> Variables
+/************************************************************************************/
 
 /************************************************************************************/
 // S> 2. Automatic run
@@ -29,9 +37,28 @@ function loadTreeFolder() {
                     $("<span>", {class: "folder", text: key})
                     .attr("data-path", fobject[key]["path"])
                     .click(function(){
+                        const clickThis = $(this);
+                        clicks++;
+                        if (clicks === 1){
+                            clearTimeout(timer);
+                            timer = setTimeout(function() {
+                                clickThis.next(".nested").toggleClass("active");
+                                clickThis.toggleClass("folder-down");
+                                clicks = 0;
+                            }, 300)
+                        } else {
+                            clicks = 0;
+                            clearTimeout(timer);
+                            showFolder(pathDir);
+                            
+                        }
+                    })
+                    .dblclick(function(e){
+                        e.preventDefault();
                         //In this place we can make and ajax that change the content of folderScreen__files and folder                        
-                        showFolder(pathDir);
-                    }))
+                        
+                    })
+                )
                 .append(
                     $("<ul>", {class: "nested", id: `id${key}`})
                 )
@@ -47,24 +74,6 @@ function loadTreeFolder() {
 }
 
 function showFolder(pathDir) {
-    /*
-    <div id="folderStruct">
-                <div id="fs-header">
-                    <span></span>
-                    <span>Name</span>
-                    <span>Size</span>
-                    <span>Creation</span>
-                    <span>Last Mod.</span>
-                </div>
-                <div class="fs-card">
-                    <span><img src="folder.png"></span>
-                    <span>Potato<span class="card-name-extension"></span></span>
-                    <span>45B</span>
-                    <span>24/12/2000</span>
-                    <span>05/01/2001</span>
-                </div>
-            </div>
-    */
     $.post("php/dirStruct.php", {
         path: pathDir
     })
@@ -150,10 +159,7 @@ function showFolder(pathDir) {
 // S> 4. nav treefolder
 function treeFolder() {
     console.log("treeFolder function is active! ")
-    $(".folder").click(function(){
-        $(this).next(".nested").toggleClass("active");
-        $(this).toggleClass("folder-down");
-    })
+    $(".folder")
 }
 //E> 4. nav treefolder
 /************************************************************************************/
