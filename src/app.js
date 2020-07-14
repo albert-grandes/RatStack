@@ -19,6 +19,7 @@ $(document).ready(function(){
     loadTreeFolder()
     //We execute the tree folder function
     //treeFolder()
+    //We check for empty boxes
 })
 // E> 2. Automatic run
 /************************************************************************************/
@@ -42,9 +43,19 @@ function loadTreeFolder() {
                         if (clicks === 1){
                             clearTimeout(timer);
                             timer = setTimeout(function() {
-                                clickThis.next(".nested").toggleClass("active");
-                                clickThis.toggleClass("folder-down");
-                                clicks = 0;
+                                $.post("php/dirStruct.php", {
+                                    path: clickThis.data("path")
+                                }).done(dirData => {
+                                    let check = false;
+                                    for(const [key, value] of Object.entries(dirData)) 
+                                        if(value.type == "dir") check = true;
+
+                                    if(check) {
+                                        clickThis.next(".nested").toggleClass("active");
+                                        clickThis.toggleClass("folder-down");
+                                        clicks = 0;
+                                    }
+                                })
                             }, 300)
                         } else {
                             clicks = 0;
