@@ -196,6 +196,7 @@ footer h6 {
     width: 100%;
     height: auto!important;
     background-color: rgb(46, 46, 46);
+    align-items: center;
     padding: 10px 0;
 }
 
@@ -211,26 +212,30 @@ footer h6 {
 }
 
 #folderStruct span > img{
-    height: 100%;
-    margin: 0 auto;
-    text-align: center;
+    height: 40px;
+    margin-left: 10px;
+
+    filter: saturate(50%);
 }
 
 #folderStruct span:nth-child(1) {
     display: block;
     width: 7%;
+    min-width: 55px;
 }
 
 #folderStruct span:nth-child(2) {
+    display: flex;
     width: 35%;
 }
 
-#folderStruct span:nth-child(3) {
-    width: 15%;
+.fsc-ext {
+    margin-left: 5px;
+    color: gray;
 }
 
-#folderStruct span:nth-child(4) {
-    width: 21.5%;
+#folderStruct span:nth-child(3) {
+    width: 7%;
 }
 
 

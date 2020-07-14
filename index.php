@@ -34,7 +34,6 @@
                     <span></span>
                     <span>Name</span>
                     <span>Size</span>
-                    <span>Creation</span>
                     <span>Last Mod.</span>
                 </div>
                 <div id="fs-content">
