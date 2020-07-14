@@ -1,5 +1,5 @@
 <?php
-$_POST["path"] = "../root/Documents/Working";
+//$_POST["path"] = "../root/Documents/Working";
 
 $dir = dir($_POST["path"]);
 
