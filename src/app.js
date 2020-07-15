@@ -69,7 +69,7 @@ function loadTreeFolder() {
                                         clickThis.toggleClass("folder-down");
                                         clicks = 0;
                                     }
-                                })   
+                                })
                             }, 300)
                         } else {
                             //double click
@@ -109,15 +109,18 @@ function showFolder(pathDir) {
         //First we load the header of the table! :)
         $("#fs-content").empty()
         for (file in data) {
+            console.log(file);
             if(data[file]["type"]=="dir") {
                 var classFile = "fs-card-dir";
             } else {
                 var classFile = "fs-card-file";
             }
+            console.log(pathDir + "/" + file)
             $.post("php/fileInfo.php", {
                 path: pathDir + "/" + file
             })
             .done(fileData => {
+                console.log(fileData)
                 $("#fs-content")
                 .append(
                     $("<div>", {class:"fs-card " + classFile})
@@ -136,6 +139,7 @@ function showFolder(pathDir) {
                             clicks = 0;
                             clearTimeout(timer);
                             if(fileData.type!="folder") {
+                                showModalContent(fileData)
                                 $("#myModal")
                                 .css("display", "flex")
                                 .hide()
@@ -150,33 +154,31 @@ function showFolder(pathDir) {
                         e.preventDefault();
                         //This is only for prevent dblclick action
                     })
-                .append(
-                    $("<span>")
                     .append(
                         $("<img>",{src: "images/" + fileExtension(fileData.type.toLowerCase()) + ".png"})
                     )
-                )
-                .append(
-                    $("<span>", {text: fileData.name }).append(
-                        $("<span>", {class: "fsc-ext", text: fileData.type.toLowerCase() })
+                    .append(
+                        $("<span>", {text: fileData.name }).append(
+                            $("<span>", {class: "fsc-ext", text: fileData.type.toLowerCase() })
+                        )
+                    )
+                    .append(
+                        $("<span>", {text: fileData.size})
+                    )
+                    .append(
+                        $("<span>", {text: fileData.lastMod})
+                    )
+                    .append(
+                        $("<span>", {class: "fsc-edit", text: "✎"}).click(e => {
+                            $(".fsc-edit").text("✎");
+                            $("[contenteditable='true']").attr("contenteditable", "false")
+                            editName(e.target, fileData.path, pathDir)
+                        })
+                    )
+                    .append(
+                        $("<span>", {class: "fsc-remove", text: "×"}).click(e => deleteFile(fileData.path, pathDir))
                     )
                 )
-                .append(
-                    $("<span>", {text: fileData.size})
-                )
-                .append(
-                    $("<span>", {text: fileData.lastMod})
-                )
-                .append(
-                    $("<span>", {class: "fsc-edit", text: "✎"}).click(e => { 
-                        $(".fsc-edit").text("✎");
-                        $("[contenteditable='true']").attr("contenteditable", "false")
-                        editName(e.target, fileData.path, pathDir) 
-                    })
-                )
-                .append(
-                    $("<span>", {class: "fsc-remove", text: "×"}).click(e => deleteFile(fileData.path, pathDir))
-                ))
             })
         }
     })
@@ -256,10 +258,26 @@ function showDetails(pathDir) {
     })
 }
 
+function showModalContent(fileObject, id="showContent") {
+    $(`#${id}`)
+    console.log(fileObject.type)
+    const images = ["png", "jpg", "jpeg", "gif"];
+    if(images.includes((fileObject.type).toLowerCase())) {
+        $(`#${id}`).empty().append(
+            $("<img>", {src: (fileObject.path).slice(3)})
+        )
+    } else if (fileObject.type=="txt") {
+        let text;
+        $.get((fileObject.path).slice(3))
+        .done(function (txt) {
+            $(`#${id}`).empty().html(txt)
+        })
+    }
+}
 function editName(dom, path, parentPath) {
     if (!dom.hasAttribute("editing") || dom.getAttribute("editing") == "false") {
         $(".fsc-edit").attr("editing", "false");
-        dom.setAttribute("editing", "true");    
+        dom.setAttribute("editing", "true");
         dom.innerHTML = "✓";
 
         dom.parentElement.children[1].contentEditable = "true";
@@ -269,7 +287,7 @@ function editName(dom, path, parentPath) {
         dom.innerHTML = "✎";
 
         dom.parentElement.children[1].contentEditable = "false";
-        
+
         $.post("php/renameFile.php", {
             path: path,
             name: dom.parentElement.children[1].innerHTML.split("<")[0]
