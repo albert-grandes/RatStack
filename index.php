@@ -19,11 +19,19 @@
         <input type="submit" value="send">
     </form>-->
     <nav>
-        <div id="new-folder">
+        <div class="action-menu">
             <div id="new-folder-btn" class="action-btn">New Folder</div>
             <form id="new-folder-form" class="modal-form" action="php/newFolder.php" method="post">
-                <input type="text" name="name" required>
+                <input type="text" name="name" autocomplete="off" required>
                 <input type="submit" value="Create">
+                <input name="path">
+            </form>
+        </div>
+        <div class="action-menu">
+            <div id="upload-file-btn" class="action-btn">Upload File</div>
+            <form id="upload-file-form" class="modal-form" action="php/uploadFile.php" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" required>
+                <input type="submit" value="Upload">
                 <input name="path">
             </form>
         </div>

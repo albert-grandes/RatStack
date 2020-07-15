@@ -29,6 +29,13 @@ $(document).ready(function(){
         form.children().eq(2).hide();
         form.toggle(200);
     })
+
+    $("#upload-file-btn").click(() => {
+        const form = $("#upload-file-form");
+        form.children().eq(2).val($("nav").attr("data-path"))
+        form.children().eq(2).hide();
+        form.toggle(200);
+    })
 })
 // E> 2. Automatic run
 /************************************************************************************/
@@ -146,8 +153,7 @@ function showFolder(pathDir) {
                 .append(
                     $("<span>")
                     .append(
-                        /*<img src="folder.png"></img>*/
-                        $("<img>",{src: "images/" + fileData.type.toLowerCase() + ".png"})
+                        $("<img>",{src: "images/" + fileExtension(fileData.type.toLowerCase()) + ".png"})
                     )
                 )
                 .append(
@@ -300,6 +306,12 @@ function emptyFolderCheck(folder) {
         if(value.type == "dir") return true;
 
     return false;
+}
+
+function fileExtension(ext) {
+    const allowedExtension = ["csv", "doc", "exe", "folder", "jpg", "mp3", "mp4", "odt", "pdf", "png", "ppt", "rar", "txt", "zip"];
+    if(allowedExtension.includes(ext)) return ext;
+    else return "file";
 }
 
 // Get the modal
