@@ -227,6 +227,10 @@ input[name="path"] {
     cursor: pointer;
 }
 
+.rename-form {
+    margin-left: 20px;
+}
+
 /*FOLDER VIEW RULES*/
 #fs-header {
     position: relative;

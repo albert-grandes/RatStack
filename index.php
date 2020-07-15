@@ -35,8 +35,8 @@
                 <input name="path">
             </form>
         </div>
-        <div>
-
+        <div id="search-input">
+            <input type="text" name="search" autocomplete="off">
         </div>
     </nav>
     <main>

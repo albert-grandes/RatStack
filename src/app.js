@@ -36,6 +36,20 @@ $(document).ready(function(){
         form.children().eq(2).hide();
         form.toggle(200);
     })
+
+    $("#search-input input").on("input", e => {
+        const input = $(e.target);
+        if(input.val().length < 2) {
+            showFolder("../root");
+        } else {
+            $.post("php/searchEngine.php", {
+                search: input.val()
+            }, data => {
+                $("nav").attr("data-path", "../root");
+                folderTable(data);
+            })
+        }
+    })
 })
 // E> 2. Automatic run
 /************************************************************************************/
@@ -107,94 +121,97 @@ function showFolder(pathDir) {
     .done(function(data) {
         console.log(data);
         //First we load the header of the table! :)
-        $("#fs-content").empty()
-        for (file in data) {
-            console.log(file);
-            if(data[file]["type"]=="dir") {
-                var classFile = "fs-card-dir";
-            } else {
-                var classFile = "fs-card-file";
-            }
-            console.log(pathDir + "/" + file)
-            $.post("php/fileInfo.php", {
-                path: pathDir + "/" + file
-            })
-            .done(fileData => {
-                $("#fs-content")
-                .append(
-                    $("<div>", {class:"fs-card " + classFile})
-                    .click(function(){
-                        const clickThis = $(this);
-                        clicks++;
-                        if (clicks === 1){
-                            //Only one click
-                            clearTimeout(timer);
-                            timer = setTimeout(function() {
-                                showDetails(fileData.path);
-                                clicks = 0;
-                            }, 300)
-                        } else {
-                            //double click
-                            clicks = 0;
-                            clearTimeout(timer);
-                            if(fileData.type!="folder") {
-                                showModalContent(fileData)
-                                $("#myModal")
-                                .css("display", "flex")
-                                .hide()
-                                .fadeIn()
-                            } else {
-                                showFolder(fileData.path);
-                                //TODO activeLink correction :(
-                            }
-                        }
-                    })
-                    .dblclick(function(e){
-                        e.preventDefault();
-                        //This is only for prevent dblclick action
-                    })
-                    .append(
-                        $("<span>").append(
-                            $("<img>",{src: "images/" + fileExtension(fileData.type.toLowerCase()) + ".png"})
-                        )           
-                    )
-                    .append(
-                        $("<span>", {text: fileData.name }).append(
-                            $("<span>", {class: "fsc-ext", text: fileData.type.toLowerCase() })
-                        )
-                    )
-                    .append(
-                        $("<span>", {text: fileData.size})
-                    )
-                    .append(
-                        $("<span>", {text: fileData.lastMod})
-                    )
-                    .append(
-                        $("<span>", {class: "fsc-edit", text: "✎"}).click(e => {
-                            const target = $(e.target);
-                            target.siblings("form").toggle(200);
-                            target.siblings("form").children("input").eq(2).hide()
-                        })
-                    )
-                    .append(
-                        $("<span>", {class: "fsc-remove", text: "×"}).click(e => deleteFile(fileData.path, pathDir))
-                    ).append(`
-                        <form id="rename-form" class="modal-form">
-                            <input type="text" name="name" autocomplete="off" required>
-                            <input type="submit" class="rename-form-btn" value="Rename">
-                            <input name="path" value="${fileData.path}">
-                        </form>
-                    `)
-                )
-                $(".rename-form-btn").off("click")
-                $(".rename-form-btn").on("click", e => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    editName(e, pathDir)
-                })
-            })
-        }
+        folderTable(data); 
     })
+}
+
+function folderTable(data) {
+    let ind = 0;
+    $("#fs-content").empty()
+    for (const [key, file] of Object.entries(data)) {
+        ind++;
+        if(file.type=="dir") {
+            var classFile = "fs-card-dir";
+        } else {
+            var classFile = "fs-card-file";
+        }
+        $.post("php/fileInfo.php", {
+            path: file.path
+        })
+        .done(fileData => {
+            $("#fs-content")
+            .append(
+                $("<div>", {class:"fs-card " + classFile})
+                .click(function(){
+                    const clickThis = $(this);
+                    clicks++;
+                    if (clicks === 1){
+                        //Only one click
+                        clearTimeout(timer);
+                        timer = setTimeout(function() {
+                            showDetails(fileData.path);
+                            clicks = 0;
+                        }, 300)
+                    } else {
+                        //double click
+                        clicks = 0;
+                        clearTimeout(timer);
+                        if(fileData.type!="folder") {
+                            showModalContent(fileData)
+                            $("#myModal")
+                            .css("display", "flex")
+                            .hide()
+                            .fadeIn()
+                        } else {
+                            showFolder(fileData.path);
+                            //TODO activeLink correction :(
+                        }
+                    }
+                })
+                .dblclick(function(e){
+                    e.preventDefault();
+                    //This is only for prevent dblclick action
+                })
+                .append(
+                    $("<span>").append(
+                        $("<img>",{src: "images/" + fileExtension(fileData.type.toLowerCase()) + ".png"})
+                    )           
+                )
+                .append(
+                    $("<span>", {text: fileData.name }).append(
+                        $("<span>", {class: "fsc-ext", text: fileData.type.toLowerCase() })
+                    )
+                )
+                .append(
+                    $("<span>", {text: fileData.size})
+                )
+                .append(
+                    $("<span>", {text: fileData.lastMod})
+                )
+                .append(
+                    $("<span>", {class: "fsc-edit", text: "✎"}).click(e => {
+                        const target = $(e.target);
+                        target.siblings("form").toggle(200);
+                        target.siblings("form").children("input").eq(2).hide()
+                    })
+                )
+                .append(
+                    $("<span>", {class: "fsc-remove", text: "×"}).click(e => deleteFile(fileData.path, pathDir))
+                ).append(`
+                    <form class="modal-form rename-form">
+                        <input type="text" name="name" autocomplete="off" required>
+                        <input type="submit" class="rename-form-btn" id="rfb-${ind}" value="Rename">
+                        <input name="path" value="${fileData.path}">
+                    </form>
+                `)
+            )
+            $("#rfb-"+ind).on("click", e => {
+                e.preventDefault()
+                e.stopPropagation()
+                editName(e, fileData.path)
+            })
+        })
+    }
 }
 
 function showDetails(pathDir) {
