@@ -100,6 +100,8 @@ main h4 {
     width: 15%;
     min-width: 210px;
     background-color: rgb(27, 27, 27);
+    padding: 1%;
+    box-shadow: inset 0px 0px 7px 7px black;
 }
 
 #m-folder {
