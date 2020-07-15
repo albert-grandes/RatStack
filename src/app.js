@@ -46,18 +46,14 @@ function loadTreeFolder() {
                             clearTimeout(timer);
                             timer = setTimeout(function() {
                                 $.post("php/dirStruct.php", {
-                                    path: clickThis.data("path")
-                                }).done(dirData => {
-                                    let check = false;
-                                    for(const [key, value] of Object.entries(dirData)) 
-                                        if(value.type == "dir") check = true;
-
-                                    if(check) {
+                                    path: pathDir
+                                }).done(folder => {
+                                    if(emptyFolderCheck(folder)) {
                                         clickThis.next(".nested").toggleClass("active");
                                         clickThis.toggleClass("folder-down");
                                         clicks = 0;
                                     }
-                                })
+                                })   
                             }, 300)
                         } else {
                             //double click
@@ -160,6 +156,16 @@ function showFolder(pathDir) {
                     .append(
                         $("<span>", {text: fileData.lastMod})
                     )
+                    .append(
+                        $("<span>", {class: "fsc-edit", text: "✎"}).click(e => {
+                            $(".fsc-edit").text("✎");
+                            $("[contenteditable='true']").attr("contenteditable", "false")
+                            editName(e.target, fileData.path, pathDir)
+                        })
+                    )
+                    .append(
+                        $("<span>", {class: "fsc-remove", text: "×"}).click(e => deleteFile(fileData.path, pathDir))
+                    )
                 )
             })
         }
@@ -256,6 +262,33 @@ function showModalContent(fileObject, id="showContent") {
         })
     }
 }
+function editName(dom, path, parentPath) {
+    if (!dom.hasAttribute("editing") || dom.getAttribute("editing") == "false") {
+        $(".fsc-edit").attr("editing", "false");
+        dom.setAttribute("editing", "true");
+        dom.innerHTML = "✓";
+
+        dom.parentElement.children[1].contentEditable = "true";
+        dom.parentElement.children[1].children[0].contentEditable = "false";
+    } else {
+        dom.setAttribute("editing", "false");
+        dom.innerHTML = "✎";
+
+        dom.parentElement.children[1].contentEditable = "false";
+
+        $.post("php/renameFile.php", {
+            path: path,
+            name: dom.parentElement.children[1].innerHTML.split("<")[0]
+        }).done(() => showFolder(parentPath));
+    }
+}
+
+function deleteFile(path, parentPath) {
+    $.post("php/deleteFile.php", {
+        path: path,
+    }).done(() => showFolder(parentPath));
+}
+
 // E> 3. Info page loader
 /************************************************************************************/
 
@@ -267,6 +300,13 @@ function treeFolder() {
 }
 //E> 4. nav treefolder
 /************************************************************************************/
+// S> X. Helper functions
+function emptyFolderCheck(folder) {
+    for(const [key, value] of Object.entries(folder)) 
+        if(value.type == "dir") return true;
+
+    return false;
+}
 
 // Get the modal
 function allowModal() {
