@@ -44,18 +44,14 @@ function loadTreeFolder() {
                             clearTimeout(timer);
                             timer = setTimeout(function() {
                                 $.post("php/dirStruct.php", {
-                                    path: clickThis.data("path")
-                                }).done(dirData => {
-                                    let check = false;
-                                    for(const [key, value] of Object.entries(dirData)) 
-                                        if(value.type == "dir") check = true;
-
-                                    if(check) {
+                                    path: pathDir
+                                }).done(folder => {
+                                    if(emptyFolderCheck(folder)) {
                                         clickThis.next(".nested").toggleClass("active");
                                         clickThis.toggleClass("folder-down");
                                         clicks = 0;
                                     }
-                                })
+                                })   
                             }, 300)
                         } else {
                             clicks = 0;
@@ -160,3 +156,10 @@ function treeFolder() {
 }
 //E> 4. nav treefolder
 /************************************************************************************/
+// S> X. Helper functions
+function emptyFolderCheck(folder) {
+    for(const [key, value] of Object.entries(folder)) 
+        if(value.type == "dir") return true;
+
+    return false;
+}
