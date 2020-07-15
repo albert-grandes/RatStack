@@ -109,7 +109,7 @@ function loadTreeFolder() {
         treeFolder()
     })
     .fail(function() {
-        alert( "error" );
+        alert("error");
     });
 }
 
@@ -230,7 +230,7 @@ function showDetails(pathDir) {
             .append(
                 $("<p>")
                 .append(
-                    $("<span>", {class: "d-label", html:"<b>Name: </b>"})
+                    $("<span>", {class: "d-label", html:"<b>Name</b>"})
                 )
                 .append(
                     $("<span>", {class: "d-value", text: file.name})
@@ -239,7 +239,7 @@ function showDetails(pathDir) {
             .append(
                 $("<p>")
                 .append(
-                    $("<span>", {class: "d-label", html:"<b>Type: </b>"})
+                    $("<span>", {class: "d-label", html:"<b>Type</b>"})
                 )
                 .append(
                     $("<span>", {class: "d-value", text: file.type})
@@ -248,19 +248,19 @@ function showDetails(pathDir) {
             .append(
                 $("<p>")
                 .append(
-                    $("<span>", {class: "d-label", html:"<b>Size: </b>"})
+                    $("<span>", {class: "d-label", html:"<b>Size</b>"})
                 )
                 .append(
                     $("<span>", {class: "d-value", text: file.size})
                 )
+            )
+            .append(
+                $("<p>")
                 .append(
-                    $("<p>")
-                    .append(
-                        $("<span>", {class: "d-label", html:"<b>Path: </b>"})
-                    )
-                    .append(
-                        $("<span>", {class: "d-value", text: file.path})
-                    )
+                    $("<span>", {class: "d-label", html:"<b>Path</b>"})
+                )
+                .append(
+                    $("<span>", {class: "d-value", text: file.path.slice(2)})
                 )
             )
         )
@@ -269,19 +269,19 @@ function showDetails(pathDir) {
             .append(
                 $("<p>")
                 .append(
-                    $("<span>", {class: "d-label", html:"<b>Last Access: </b>"})
+                    $("<span>", {class: "d-label", html:"<b>Last Access</b>"})
                 )
                 .append(
                     $("<span>", {class: "d-value", text: file.lastAccess})
                 )
+            )
+            .append(
+                $("<p>")
                 .append(
-                    $("<p>")
-                    .append(
-                        $("<span>", {class: "d-label", html:"<b>Last Modification: </b>"})
-                    )
-                    .append(
-                        $("<span>", {class: "d-value", text: file.lastMod})
-                    )
+                    $("<span>", {class: "d-label", html:"<b>Last Modification</b>"})
+                )
+                .append(
+                    $("<span>", {class: "d-value", text: file.lastMod})
                 )
             )
         }
@@ -322,7 +322,7 @@ function editName(el, path) {
 
 function deleteFile(path) {
     const parentPath = path.split("/").splice(0, path.split("/").length - 1).join("/");
-    
+
     $.post("php/deleteFile.php", {
         path: path,
     }).done(() => {
