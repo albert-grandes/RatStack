@@ -53,7 +53,7 @@ function loadTreeFolder() {
                                         clickThis.toggleClass("folder-down");
                                         clicks = 0;
                                     }
-                                })   
+                                })
                             }, 300)
                         } else {
                             //double click
