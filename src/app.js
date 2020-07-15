@@ -36,6 +36,20 @@ $(document).ready(function(){
         form.children().eq(2).hide();
         form.toggle(200);
     })
+
+    $("#search-input input").on("input", e => {
+        const input = $(e.target);
+        if(input.val().length < 2) {
+            showFolder("../root");
+        } else {
+            $.post("php/searchEngine.php", {
+                search: input.val()
+            }, data => {
+                $("nav").attr("data-path", "../root");
+                folderTable(data);
+            })
+        }
+    })
 })
 // E> 2. Automatic run
 /************************************************************************************/
@@ -95,7 +109,7 @@ function loadTreeFolder() {
         treeFolder()
     })
     .fail(function() {
-        alert( "error" );
+        alert("error");
     });
 }
 
@@ -107,94 +121,97 @@ function showFolder(pathDir) {
     .done(function(data) {
         console.log(data);
         //First we load the header of the table! :)
-        $("#fs-content").empty()
-        for (file in data) {
-            console.log(file);
-            if(data[file]["type"]=="dir") {
-                var classFile = "fs-card-dir";
-            } else {
-                var classFile = "fs-card-file";
-            }
-            console.log(pathDir + "/" + file)
-            $.post("php/fileInfo.php", {
-                path: pathDir + "/" + file
-            })
-            .done(fileData => {
-                $("#fs-content")
-                .append(
-                    $("<div>", {class:"fs-card " + classFile})
-                    .click(function(){
-                        const clickThis = $(this);
-                        clicks++;
-                        if (clicks === 1){
-                            //Only one click
-                            clearTimeout(timer);
-                            timer = setTimeout(function() {
-                                showDetails(fileData.path);
-                                clicks = 0;
-                            }, 300)
-                        } else {
-                            //double click
-                            clicks = 0;
-                            clearTimeout(timer);
-                            if(fileData.type!="folder") {
-                                showModalContent(fileData)
-                                $("#myModal")
-                                .css("display", "flex")
-                                .hide()
-                                .fadeIn()
-                            } else {
-                                showFolder(fileData.path);
-                                //TODO activeLink correction :(
-                            }
-                        }
-                    })
-                    .dblclick(function(e){
-                        e.preventDefault();
-                        //This is only for prevent dblclick action
-                    })
-                    .append(
-                        $("<span>").append(
-                            $("<img>",{src: "images/" + fileExtension(fileData.type.toLowerCase()) + ".png"})
-                        )
-                    )
-                    .append(
-                        $("<span>", {text: fileData.name }).append(
-                            $("<span>", {class: "fsc-ext", text: fileData.type.toLowerCase() })
-                        )
-                    )
-                    .append(
-                        $("<span>", {text: fileData.size})
-                    )
-                    .append(
-                        $("<span>", {text: fileData.lastMod})
-                    )
-                    .append(
-                        $("<span>", {class: "fsc-edit", text: "✎"}).click(e => {
-                            const target = $(e.target);
-                            target.siblings("form").toggle(200);
-                            target.siblings("form").children("input").eq(2).hide()
-                        })
-                    )
-                    .append(
-                        $("<span>", {class: "fsc-remove", text: "×"}).click(e => deleteFile(fileData.path, pathDir))
-                    ).append(`
-                        <form id="rename-form" class="modal-form">
-                            <input type="text" name="name" autocomplete="off" required>
-                            <input type="submit" class="rename-form-btn" value="Rename">
-                            <input name="path" value="${fileData.path}">
-                        </form>
-                    `)
-                )
-                $(".rename-form-btn").off("click")
-                $(".rename-form-btn").on("click", e => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    editName(e, pathDir)
-                })
-            })
-        }
+        folderTable(data);
     })
+}
+
+function folderTable(data) {
+    let ind = 0;
+    $("#fs-content").empty()
+    for (const [key, file] of Object.entries(data)) {
+        if(file.type=="dir") {
+            var classFile = "fs-card-dir";
+        } else {
+            var classFile = "fs-card-file";
+        }
+        $.post("php/fileInfo.php", {
+            path: file.path
+        })
+        .done(fileData => {
+            ind++;
+            $("#fs-content")
+            .append(
+                $("<div>", {class:"fs-card " + classFile})
+                .click(function(){
+                    const clickThis = $(this);
+                    clicks++;
+                    if (clicks === 1){
+                        //Only one click
+                        clearTimeout(timer);
+                        timer = setTimeout(function() {
+                            showDetails(fileData.path);
+                            clicks = 0;
+                        }, 300)
+                    } else {
+                        //double click
+                        clicks = 0;
+                        clearTimeout(timer);
+                        if(fileData.type!="folder") {
+                            showModalContent(fileData)
+                            $("#myModal")
+                            .css("display", "flex")
+                            .hide()
+                            .fadeIn()
+                        } else {
+                            showFolder(fileData.path);
+                            //TODO activeLink correction :(
+                        }
+                    }
+                })
+                .dblclick(function(e){
+                    e.preventDefault();
+                    //This is only for prevent dblclick action
+                })
+                .append(
+                    $("<span>").append(
+                        $("<img>",{src: "images/" + fileExtension(fileData.type.toLowerCase()) + ".png"})
+                    )
+                )
+                .append(
+                    $("<span>", {text: fileData.name }).append(
+                        $("<span>", {class: "fsc-ext", text: fileData.type.toLowerCase() })
+                    )
+                )
+                .append(
+                    $("<span>", {text: fileData.size})
+                )
+                .append(
+                    $("<span>", {text: fileData.lastMod})
+                )
+                .append(
+                    $("<span>", {class: "fsc-edit", text: "✎"}).click(e => {
+                        const target = $(e.target);
+                        target.siblings("form").toggle(200);
+                        target.siblings("form").children("input").eq(2).hide()
+                    })
+                )
+                .append(
+                    $("<span>", {class: "fsc-remove", text: "×"}).click(e => deleteFile(fileData.path))
+                ).append(`
+                    <form class="modal-form rename-form">
+                        <input type="text" name="name" autocomplete="off" required>
+                        <input type="submit" class="rename-form-btn" id="rfb-${ind}" value="Rename">
+                        <input name="path" value="${fileData.path}">
+                    </form>
+                `)
+            )
+            $("#rfb-"+ind).on("click", e => {
+                e.preventDefault()
+                e.stopPropagation()
+                editName(e, fileData.path)
+            })
+        })
+    }
 }
 
 function showDetails(pathDir) {
@@ -202,7 +219,6 @@ function showDetails(pathDir) {
         path: pathDir
     })
     .done(function(file) {
-        console.log(file);
         //First we load the header of the table! :)
         $("#m-details").empty()
         .append(
@@ -213,7 +229,7 @@ function showDetails(pathDir) {
             .append(
                 $("<p>")
                 .append(
-                    $("<span>", {class: "d-label", html:"<b>Name: </b>"})
+                    $("<span>", {class: "d-label", html:"<b>Name</b>"})
                 )
                 .append(
                     $("<span>", {class: "d-value", text: file.name})
@@ -222,7 +238,7 @@ function showDetails(pathDir) {
             .append(
                 $("<p>")
                 .append(
-                    $("<span>", {class: "d-label", html:"<b>Type: </b>"})
+                    $("<span>", {class: "d-label", html:"<b>Type</b>"})
                 )
                 .append(
                     $("<span>", {class: "d-value", text: file.type})
@@ -231,19 +247,19 @@ function showDetails(pathDir) {
             .append(
                 $("<p>")
                 .append(
-                    $("<span>", {class: "d-label", html:"<b>Size: </b>"})
+                    $("<span>", {class: "d-label", html:"<b>Size</b>"})
                 )
                 .append(
                     $("<span>", {class: "d-value", text: file.size})
                 )
+            )
+            .append(
+                $("<p>")
                 .append(
-                    $("<p>")
-                    .append(
-                        $("<span>", {class: "d-label", html:"<b>Path: </b>"})
-                    )
-                    .append(
-                        $("<span>", {class: "d-value", text: file.path})
-                    )
+                    $("<span>", {class: "d-label", html:"<b>Path</b>"})
+                )
+                .append(
+                    $("<span>", {class: "d-value", text: file.path.slice(2)})
                 )
             )
         )
@@ -252,19 +268,19 @@ function showDetails(pathDir) {
             .append(
                 $("<p>")
                 .append(
-                    $("<span>", {class: "d-label", html:"<b>Last Access: </b>"})
+                    $("<span>", {class: "d-label", html:"<b>Last Access</b>"})
                 )
                 .append(
                     $("<span>", {class: "d-value", text: file.lastAccess})
                 )
+            )
+            .append(
+                $("<p>")
                 .append(
-                    $("<p>")
-                    .append(
-                        $("<span>", {class: "d-label", html:"<b>Last Modification: </b>"})
-                    )
-                    .append(
-                        $("<span>", {class: "d-value", text: file.lastMod})
-                    )
+                    $("<span>", {class: "d-label", html:"<b>Last Modification</b>"})
+                )
+                .append(
+                    $("<span>", {class: "d-value", text: file.lastMod})
                 )
             )
         }
@@ -273,7 +289,6 @@ function showDetails(pathDir) {
 
 function showModalContent(fileObject, id="showContent") {
     $(`#${id}`)
-    console.log(fileObject.type)
     const images = ["png", "jpg", "jpeg", "gif"];
     const videos = ["mp4", "avi"];
     const music = ["mp3", "waw"];
@@ -294,14 +309,9 @@ function showModalContent(fileObject, id="showContent") {
             )
         )
     } else if (fileObject.type=="csv") {
-        alert("CSV");
         $.get(`php/csvReaderToHTML.php?path=${fileObject.path}`)
         .done(function(data){
             $(`#${id}`).empty().html(data);
-        })
-        .fail(function(data){
-            console.log(data)
-            console.log("CSV ERROR")
         })
     } else if (fileObject.type=="txt") {
         let text;
@@ -316,8 +326,10 @@ function showModalContent(fileObject, id="showContent") {
     }
 }
 
-function editName(el, parentPath) {
+function editName(el, path) {
     const form = $(el.target.parentElement);
+    const parentPath = path.split("/").splice(0, path.split("/").length - 1).join("/");
+    console.log(parentPath)
     $.post("php/renameFile.php", {
         path: form.children().eq(2).val(),
         name: form.children().eq(0).val(),
@@ -329,7 +341,9 @@ function editName(el, parentPath) {
     })
 }
 
-function deleteFile(path, parentPath) {
+function deleteFile(path) {
+    const parentPath = path.split("/").splice(0, path.split("/").length - 1).join("/");
+
     $.post("php/deleteFile.php", {
         path: path,
     }).done(() => {

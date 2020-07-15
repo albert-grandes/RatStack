@@ -27,16 +27,16 @@
                 <input name="path">
             </form>
         </div>
+        <div id="search-input">
+            <input type="text" name="search" autocomplete="off" placeholder="Search...">
+        </div>
         <div class="action-menu">
-            <div id="upload-file-btn" class="action-btn">Upload File</div>
             <form id="upload-file-form" class="modal-form" action="php/uploadFile.php" method="post" enctype="multipart/form-data">
                 <input type="file" name="file" required>
                 <input type="submit" value="Upload">
                 <input name="path">
             </form>
-        </div>
-        <div>
-
+            <div id="upload-file-btn" class="action-btn">Upload File</div>
         </div>
     </nav>
     <main>
