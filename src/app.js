@@ -277,7 +277,6 @@ function showModalContent(fileObject, id="showContent") {
     const images = ["png", "jpg", "jpeg", "gif"];
     const videos = ["mp4", "avi"];
     const music = ["mp3", "waw"];
-    const download = ["pdf", "zip", "rar"];
     if(images.includes((fileObject.type).toLowerCase())) {
         $(`#${id}`).empty().append(
             $("<img>", {src: (fileObject.path).slice(3)})
@@ -294,13 +293,23 @@ function showModalContent(fileObject, id="showContent") {
                 $("<source>", {src: (fileObject.path).slice(3)})
             )
         )
+    } else if (fileObject.type=="csv") {
+        alert("CSV");
+        $.get(`php/csvReaderToHTML.php?path=${fileObject.path}`)
+        .done(function(data){
+            $(`#${id}`).empty().html(data);
+        })
+        .fail(function(data){
+            console.log(data)
+            console.log("CSV ERROR")
+        })
     } else if (fileObject.type=="txt") {
         let text;
         $.get((fileObject.path).slice(3))
         .done(function (txt) {
             $(`#${id}`).empty().html(txt)
         })
-    } else if (download.includes((fileObject.type).toLowerCase())) {
+    } else {
         $(`#${id}`).empty().append(
             $("<a>", {href: (fileObject.path).slice(3), text:`Download ${fileObject.type}`, target:"_blank", class:"m-download"})
         )
