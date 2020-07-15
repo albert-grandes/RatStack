@@ -129,7 +129,6 @@ function folderTable(data) {
     let ind = 0;
     $("#fs-content").empty()
     for (const [key, file] of Object.entries(data)) {
-        ind++;
         if(file.type=="dir") {
             var classFile = "fs-card-dir";
         } else {
@@ -139,6 +138,7 @@ function folderTable(data) {
             path: file.path
         })
         .done(fileData => {
+            ind++;
             $("#fs-content")
             .append(
                 $("<div>", {class:"fs-card " + classFile})
@@ -305,8 +305,10 @@ function showModalContent(fileObject, id="showContent") {
     }
 }
 
-function editName(el, parentPath) {
+function editName(el, path) {
     const form = $(el.target.parentElement);
+    const parentPath = path.split("/").splice(0, path.split("/").length - 1).join("/");
+    console.log(parentPath)
     $.post("php/renameFile.php", {
         path: form.children().eq(2).val(),
         name: form.children().eq(0).val(),
