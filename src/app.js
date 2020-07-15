@@ -122,6 +122,16 @@ function showFolder(pathDir) {
                 )
                 .append(
                     $("<span>", {text: fileData.lastMod})
+                )
+                .append(
+                    $("<span>", {class: "fsc-edit", text: "✎"}).click(e => { 
+                        $(".fsc-edit").text("✎");
+                        $("[contenteditable='true']").attr("contenteditable", "false")
+                        editName(e.target, fileData.path, pathDir) 
+                    })
+                )
+                .append(
+                    $("<span>", {class: "fsc-remove", text: "×"}).click(e => deleteFile(fileData.path, pathDir))
                 ))
             })
         }
@@ -200,6 +210,33 @@ function showDetails(pathDir) {
             )
         }
     })
+}
+
+function editName(dom, path, parentPath) {
+    if (!dom.hasAttribute("editing") || dom.getAttribute("editing") == "false") {
+        $(".fsc-edit").attr("editing", "false");
+        dom.setAttribute("editing", "true");    
+        dom.innerHTML = "✓";
+
+        dom.parentElement.children[1].contentEditable = "true";
+        dom.parentElement.children[1].children[0].contentEditable = "false";
+    } else {
+        dom.setAttribute("editing", "false");
+        dom.innerHTML = "✎";
+
+        dom.parentElement.children[1].contentEditable = "false";
+        
+        $.post("php/renameFile.php", {
+            path: path,
+            name: dom.parentElement.children[1].innerHTML.split("<")[0]
+        }).done(() => showFolder(parentPath));
+    }
+}
+
+function deleteFile(path, parentPath) {
+    $.post("php/deleteFile.php", {
+        path: path,
+    }).done(() => showFolder(parentPath));
 }
 
 // E> 3. Info page loader

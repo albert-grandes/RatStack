@@ -42,7 +42,7 @@ body {
     background-color: rgb(14, 14, 14);
     height: 100vh;
     width: 100vw;
-    min-width: 900px;
+    min-width: 1000px;
     min-height: 300px;
 }
 
@@ -235,6 +235,15 @@ footer h6 {
 #folderStruct span:nth-child(2) {
     display: flex;
     width: 35%;
+
+    border-radius: 4px;
+
+    margin-right: 20px;
+    padding: 2px 4px;
+}
+
+#folderStruct span:nth-child(2)[contenteditable=true] {
+    background-color: rgb(88, 88, 88);
 }
 
 .fsc-ext {
@@ -246,10 +255,33 @@ footer h6 {
     width: 10%;
 }
 
-
-#folderStruct > div > span:nth-child(5) {
-    width: 21.5%;
+#folderStruct span:nth-child(4) {
+    width: 40%;
 }
+
+.fsc-edit, .fsc-remove {
+    text-overflow: clip!important;
+    user-select: none!important;
+    text-align: center;
+    font-size: 18px;
+
+    padding: 2px 4px;
+    margin: 0 4px;
+    transition: 0.2s all;
+}
+
+.fsc-remove {
+    margin-right: 10px;
+    font-size: 24px;
+}
+
+.fsc-edit:hover, .fsc-remove:hover {
+    cursor: pointer;
+    background-color: #555;
+    border-radius: 5px;
+}
+
+
 @media (max-width: 700px) {
     #m-structure, #m-details {
         display: none;

@@ -25,7 +25,7 @@ if(is_dir($_POST["path"])) {
 
 function byteToMeasure($b) : string {
     //$measure = ["B", "KB", "MB", "GB", "TB"];
-    $measure = ["bytes", "KB", "MB", "GB", "TB"];
+    $measure = ["B", "KB", "MB", "GB", "TB"];
     $m = $b;
     $i = 0;
 
