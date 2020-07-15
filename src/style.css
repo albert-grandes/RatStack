@@ -369,6 +369,10 @@ input[name="path"] {
 #showContent img {
     max-height: 90vh;
 }
+#showContent audio {
+    background-color: black;
+    color: whitesmoke;
+}
 
 /* The Close Button */
 .close {

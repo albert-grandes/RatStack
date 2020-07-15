@@ -156,7 +156,7 @@ function showFolder(pathDir) {
                     .append(
                         $("<span>").append(
                             $("<img>",{src: "images/" + fileExtension(fileData.type.toLowerCase()) + ".png"})
-                        )           
+                        )
                     )
                     .append(
                         $("<span>", {text: fileData.name }).append(
@@ -275,9 +275,24 @@ function showModalContent(fileObject, id="showContent") {
     $(`#${id}`)
     console.log(fileObject.type)
     const images = ["png", "jpg", "jpeg", "gif"];
+    const videos = ["mp4", "avi"];
+    const music = ["mp3", "waw"];
+    const download = ["pdf", "zip", "rar"];
     if(images.includes((fileObject.type).toLowerCase())) {
         $(`#${id}`).empty().append(
             $("<img>", {src: (fileObject.path).slice(3)})
+        )
+    } else if (videos.includes((fileObject.type).toLowerCase())) {
+        $(`#${id}`).empty().append(
+            $("<video>", {controls: true}).append(
+                $("<source>", {src: (fileObject.path).slice(3)})
+            )
+        )
+    } else if (music.includes((fileObject.type).toLowerCase())) {
+        $(`#${id}`).empty().append(
+            $("<audio>", {controls: true}).append(
+                $("<source>", {src: (fileObject.path).slice(3)})
+            )
         )
     } else if (fileObject.type=="txt") {
         let text;
@@ -285,6 +300,10 @@ function showModalContent(fileObject, id="showContent") {
         .done(function (txt) {
             $(`#${id}`).empty().html(txt)
         })
+    } else if (download.includes((fileObject.type).toLowerCase())) {
+        $(`#${id}`).empty().append(
+            $("<a>", {href: (fileObject.path).slice(3), text:`Download ${fileObject.type}`, target:"_blank", class:"m-download"})
+        )
     }
 }
 
@@ -323,7 +342,7 @@ function treeFolder() {
 /************************************************************************************/
 // S> X. Helper functions
 function emptyFolderCheck(folder) {
-    for(const [key, value] of Object.entries(folder)) 
+    for(const [key, value] of Object.entries(folder))
         if(value.type == "dir") return true;
 
     return false;
@@ -341,6 +360,7 @@ function allowModal() {
         console.log(event.target.id +"<-> "+ "myModal")
         if (event.target.id == "myModal") {
             modal.fadeOut()
+            $("#showContent").empty();
         }
     })
     let btn = $("#myBtn").click(function() {
@@ -348,5 +368,6 @@ function allowModal() {
     })
     let span = $(".close").click(function(){
         modal.fadeOut();
+        $("#showContent").empty();
     })
 }
