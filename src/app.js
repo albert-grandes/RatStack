@@ -120,7 +120,6 @@ function showFolder(pathDir) {
                 path: pathDir + "/" + file
             })
             .done(fileData => {
-                console.log(fileData)
                 $("#fs-content")
                 .append(
                     $("<div>", {class:"fs-card " + classFile})
@@ -155,7 +154,9 @@ function showFolder(pathDir) {
                         //This is only for prevent dblclick action
                     })
                     .append(
-                        $("<img>",{src: "images/" + fileExtension(fileData.type.toLowerCase()) + ".png"})
+                        $("<span>").append(
+                            $("<img>",{src: "images/" + fileExtension(fileData.type.toLowerCase()) + ".png"})
+                        )           
                     )
                     .append(
                         $("<span>", {text: fileData.name }).append(
@@ -170,15 +171,27 @@ function showFolder(pathDir) {
                     )
                     .append(
                         $("<span>", {class: "fsc-edit", text: "✎"}).click(e => {
-                            $(".fsc-edit").text("✎");
-                            $("[contenteditable='true']").attr("contenteditable", "false")
-                            editName(e.target, fileData.path, pathDir)
+                            const target = $(e.target);
+                            target.siblings("form").toggle(200);
+                            target.siblings("form").children("input").eq(2).hide()
                         })
                     )
                     .append(
                         $("<span>", {class: "fsc-remove", text: "×"}).click(e => deleteFile(fileData.path, pathDir))
-                    )
+                    ).append(`
+                        <form id="rename-form" class="modal-form">
+                            <input type="text" name="name" autocomplete="off" required>
+                            <input type="submit" class="rename-form-btn" value="Rename">
+                            <input name="path" value="${fileData.path}">
+                        </form>
+                    `)
                 )
+                $(".rename-form-btn").off("click")
+                $(".rename-form-btn").on("click", e => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    editName(e, pathDir)
+                })
             })
         }
     })
@@ -274,28 +287,18 @@ function showModalContent(fileObject, id="showContent") {
         })
     }
 }
-function editName(dom, path, parentPath) {
-    if (!dom.hasAttribute("editing") || dom.getAttribute("editing") == "false") {
-        $(".fsc-edit").attr("editing", "false");
-        dom.setAttribute("editing", "true");
-        dom.innerHTML = "✓";
 
-        dom.parentElement.children[1].contentEditable = "true";
-        dom.parentElement.children[1].children[0].contentEditable = "false";
-    } else {
-        dom.setAttribute("editing", "false");
-        dom.innerHTML = "✎";
-
-        dom.parentElement.children[1].contentEditable = "false";
-
-        $.post("php/renameFile.php", {
-            path: path,
-            name: dom.parentElement.children[1].innerHTML.split("<")[0]
-        }).done(() => {
-            showFolder(parentPath);
-            loadTreeFolder();
-        });
-    }
+function editName(el, parentPath) {
+    const form = $(el.target.parentElement);
+    $.post("php/renameFile.php", {
+        path: form.children().eq(2).val(),
+        name: form.children().eq(0).val(),
+        ext: form.parent().children().eq(1).children("span").text()
+    })
+    .done(() => { 
+        showFolder(parentPath)
+        loadTreeFolder();
+    })
 }
 
 function deleteFile(path, parentPath) {

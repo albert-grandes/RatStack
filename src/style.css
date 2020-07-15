@@ -254,6 +254,7 @@ input[name="path"] {
     display: flex;
     width: 100%;
     height: auto!important;
+    flex-flow: wrap;  
     background-color: rgb(46, 46, 46);
     align-items: center;
     padding: 10px 0;
@@ -291,10 +292,6 @@ input[name="path"] {
 
     margin-right: 20px;
     padding: 2px 4px;
-}
-
-#folderStruct span:nth-child(2)[contenteditable=true] {
-    background-color: rgb(88, 88, 88);
 }
 
 .fsc-ext {
