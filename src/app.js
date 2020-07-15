@@ -19,6 +19,8 @@ $(document).ready(function(){
     loadTreeFolder()
     //We put the root folder when start!
     showFolder("../root")
+    //Allow modal options to view files
+    allowModal();
 })
 // E> 2. Automatic run
 /************************************************************************************/
@@ -54,7 +56,7 @@ function loadTreeFolder() {
                                 })   
                             }, 300)
                         } else {
-                            //double click 
+                            //double click
                             clicks = 0;
                             clearTimeout(timer);
                             $(".folder_active").removeClass("folder_active")
@@ -102,8 +104,35 @@ function showFolder(pathDir) {
             .done(fileData => {
                 $("#fs-content")
                 .append(
-                    $("<div>", {class:"fs-card " + classFile}).click(function(){
-                        showDetails(fileData.path);
+                    $("<div>", {class:"fs-card " + classFile})
+                    .click(function(){
+                        const clickThis = $(this);
+                        clicks++;
+                        if (clicks === 1){
+                            //Only one click
+                            clearTimeout(timer);
+                            timer = setTimeout(function() {
+                                showDetails(fileData.path);
+                                clicks = 0;
+                            }, 300)
+                        } else {
+                            //double click
+                            clicks = 0;
+                            clearTimeout(timer);
+                            if(fileData.type!="folder") {
+                                $("#myModal")
+                                .css("display", "flex")
+                                .hide()
+                                .fadeIn()
+                            } else {
+                                showFolder(fileData.path);
+                                //TODO activeLink correction :(
+                            }
+                        }
+                    })
+                    .dblclick(function(e){
+                        e.preventDefault();
+                        //This is only for prevent dblclick action
                     })
                 .append(
                     $("<span>")
@@ -256,4 +285,20 @@ function emptyFolderCheck(folder) {
         if(value.type == "dir") return true;
 
     return false;
+}
+
+// Get the modal
+function allowModal() {
+    let modal = $("#myModal").click(function(event){
+        console.log(event.target.id +"<-> "+ "myModal")
+        if (event.target.id == "myModal") {
+            modal.fadeOut()
+        }
+    })
+    let btn = $("#myBtn").click(function() {
+        modal.fadeIn();
+    })
+    let span = $(".close").click(function(){
+        modal.fadeOut();
+    })
 }
