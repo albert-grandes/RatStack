@@ -19,7 +19,17 @@
         <input type="submit" value="send">
     </form>-->
     <nav>
+        <div id="new-folder">
+            <div id="new-folder-btn" class="action-btn">New Folder</div>
+            <form id="new-folder-form" class="modal-form" action="php/newFolder.php" method="post">
+                <input type="text" name="name" required>
+                <input type="submit" value="Create">
+                <input name="path">
+            </form>
+        </div>
+        <div>
 
+        </div>
     </nav>
     <main>
         <div id="m-structure">

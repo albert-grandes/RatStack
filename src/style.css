@@ -176,6 +176,59 @@ footer h6 {
     display: block;
 }
 
+
+/*USER ACTIONS*/
+input[name="path"] {
+    display: hidden;
+}
+
+.action-btn {
+    background-color: var(--main-color);
+
+    border-radius: 4px;
+    user-select: none;
+
+    margin: 0 10px;
+    margin-left: 20px;
+    padding: 3px 6px;
+
+    transition: 0.2s all;
+}
+
+.action-btn:hover {
+    cursor: pointer;
+    filter: brightness(120%);
+}
+
+#new-folder {
+    display: flex;
+    width: 50%;
+
+    align-items: center;
+}
+
+.modal-form {
+    display: none;
+}
+
+.modal-form input {
+    background-color: #555;
+    color: white;
+
+    border: none;
+    border-radius: 5px;
+    padding: 3px 6px;
+}
+
+.modal-form input[type="submit"] {
+    background-color: rgb(128, 128, 128);
+    color: black;
+}
+
+.modal-form input[type="submit"]:hover {
+    cursor: pointer;
+}
+
 /*FOLDER VIEW RULES*/
 #fs-header {
     position: relative;

@@ -21,6 +21,14 @@ $(document).ready(function(){
     showFolder("../root")
     //Allow modal options to view files
     allowModal();
+
+    //Event Listeners
+    $("#new-folder-btn").click(() => {
+        const form = $("#new-folder-form");
+        form.children().eq(2).val($("nav").attr("data-path"))
+        form.children().eq(2).hide();
+        form.toggle(200);
+    })
 })
 // E> 2. Automatic run
 /************************************************************************************/
@@ -28,6 +36,7 @@ $(document).ready(function(){
 /************************************************************************************/
 // S> 3. Info page loader
 function loadTreeFolder() {
+    $("#folderTree").empty();
     $.ajax("php/rootStruct.php")
     .done(function(data) {
         addFolders("folderTree", data); //Recursive function
@@ -84,7 +93,7 @@ function loadTreeFolder() {
 }
 
 function showFolder(pathDir) {
-    console.log(pathDir);
+    $("nav").attr("data-path", pathDir);
     $.post("php/dirStruct.php", {
         path: pathDir
     })
@@ -258,14 +267,20 @@ function editName(dom, path, parentPath) {
         $.post("php/renameFile.php", {
             path: path,
             name: dom.parentElement.children[1].innerHTML.split("<")[0]
-        }).done(() => showFolder(parentPath));
+        }).done(() => {
+            showFolder(parentPath);
+            loadTreeFolder();
+        });
     }
 }
 
 function deleteFile(path, parentPath) {
     $.post("php/deleteFile.php", {
         path: path,
-    }).done(() => showFolder(parentPath));
+    }).done(() => {
+        showFolder(parentPath);
+        loadTreeFolder();
+    });
 }
 
 // E> 3. Info page loader
