@@ -70,6 +70,7 @@ nav {
     position: relative;
     display: flex;
     height: 7%;
+    justify-content: space-between;
 
     background-color: rgb(32, 32, 32);
     box-shadow: 0px 9px 10px 0 rgba(0,0,0,0.5);
@@ -178,6 +179,16 @@ footer h6 {
 
 
 /*USER ACTIONS*/
+#search-input{
+    display: flex;
+    align-items: center;
+    float: right;
+}
+
+#search-input input{
+    font-size: 20px;
+}
+
 input[name="path"] {
     display: hidden;
 }
@@ -188,8 +199,7 @@ input[name="path"] {
     border-radius: 4px;
     user-select: none;
 
-    margin: 0 10px;
-    margin-left: 20px;
+    margin: 0 20px;
     padding: 3px 6px;
 
     transition: 0.2s all;
@@ -209,7 +219,7 @@ input[name="path"] {
     display: none;
 }
 
-.modal-form input {
+.modal-form input, #search-input input {
     background-color: #555;
     color: white;
 

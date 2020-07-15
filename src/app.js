@@ -196,7 +196,7 @@ function folderTable(data) {
                     })
                 )
                 .append(
-                    $("<span>", {class: "fsc-remove", text: "×"}).click(e => deleteFile(fileData.path, pathDir))
+                    $("<span>", {class: "fsc-remove", text: "×"}).click(e => deleteFile(fileData.path))
                 ).append(`
                     <form class="modal-form rename-form">
                         <input type="text" name="name" autocomplete="off" required>
@@ -320,7 +320,9 @@ function editName(el, path) {
     })
 }
 
-function deleteFile(path, parentPath) {
+function deleteFile(path) {
+    const parentPath = path.split("/").splice(0, path.split("/").length - 1).join("/");
+    
     $.post("php/deleteFile.php", {
         path: path,
     }).done(() => {
