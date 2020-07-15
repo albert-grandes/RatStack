@@ -17,9 +17,8 @@ let timer;
 $(document).ready(function(){
     //We have to import the data of tree folder! 
     loadTreeFolder()
-    //We execute the tree folder function
-    //treeFolder()
-    //We check for empty boxes
+    //We put the root folder when start!
+    showFolder("../root")
 })
 // E> 2. Automatic run
 /************************************************************************************/
@@ -41,6 +40,7 @@ function loadTreeFolder() {
                         const clickThis = $(this);
                         clicks++;
                         if (clicks === 1){
+                            //Only one click
                             clearTimeout(timer);
                             timer = setTimeout(function() {
                                 $.post("php/dirStruct.php", {
@@ -58,17 +58,17 @@ function loadTreeFolder() {
                                 })
                             }, 300)
                         } else {
+                            //double click 
                             clicks = 0;
                             clearTimeout(timer);
                             $(".folder_active").removeClass("folder_active")
                             clickThis.addClass("folder_active");
-                            showFolder(pathDir);                           
+                            showFolder(pathDir);
                         }
                     })
                     .dblclick(function(e){
                         e.preventDefault();
-                        //In this place we can make and ajax that change the content of folderScreen__files and folder                        
-                        
+                        //This is only for prevent dblclick action
                     })
                 )
                 .append(
@@ -86,6 +86,7 @@ function loadTreeFolder() {
 }
 
 function showFolder(pathDir) {
+    console.log(pathDir);
     $.post("php/dirStruct.php", {
         path: pathDir
     })
@@ -105,7 +106,9 @@ function showFolder(pathDir) {
             .done(fileData => {
                 $("#fs-content")
                 .append(
-                $("<div>", {class:"fs-card " + classFile})
+                    $("<div>", {class:"fs-card " + classFile}).click(function(){
+                        showDetails(fileData.path);
+                    })
                 .append(
                     $("<span>")
                     .append(
@@ -126,26 +129,98 @@ function showFolder(pathDir) {
                 ))
             })
         }
-        /*
-        addFile("folderStruct", data); //Recursive function
-        function addFile(id, fobject) {
-            for (key in fobject) {
-                const pathDir = fobject[key]["path"];
-                const folder = $("<li>")
+    })
+}
+
+function showDetails(pathDir) {
+    $.post("php/fileInfo.php", {
+        path: pathDir
+    })
+    .done(function(file) {
+        console.log(file);
+        //First we load the header of the table! :)
+        $("#m-details").empty()
+        .append(
+            $("<h4>", {text:"Details"})
+        )
+        .append(
+            $("<div>", {class:"d-content", id:"d-content"})
+            .append(
+                $("<p>")
                 .append(
-                    $("<span>", {class: "folder", text: key})
-                    .attr("data-path", fobject[key]["path"])
-                    .click(function(){
-                        //In this place we can make and ajax that change the content of folderScreen__files and folder                        
-                        showFolder(pathDir);
-                    }))
-                .append(
-                    $("<ul>", {class: "nested", id: `id${key}`})
+                    $("<span>", {class: "d-label", html:"<b>Name: </b>"})
                 )
-                $(`#${id}`).append(folder)
-                addFolders(`id${key}`, fobject[key]["content"])
-            }
-        }*/
+                .append(
+                    $("<span>", {class: "d-value", text: file.name})
+                )
+            )
+            .append(
+                $("<p>")
+                .append(
+                    $("<span>", {class: "d-label", html:"<b>Type: </b>"})
+                )
+                .append(
+                    $("<span>", {class: "d-value", text: file.type})
+                )
+            )
+            .append(
+                $("<p>")
+                .append(
+                    $("<span>", {class: "d-label", html:"<b>Size: </b>"})
+                )
+                .append(
+                    $("<span>", {class: "d-value", text: file.size})
+                )
+                .append(
+                    $("<p>")
+                    .append(
+                        $("<span>", {class: "d-label", html:"<b>Path: </b>"})
+                    )
+                    .append(
+                        $("<span>", {class: "d-value", text: file.path})
+                    )
+                )
+            )
+        )
+        if(file.type!="folder") {
+            $("#d-content")
+            .append(
+                $("<p>")
+                .append(
+                    $("<span>", {class: "d-label", html:"<b>Last Access: </b>"})
+                )
+                .append(
+                    $("<span>", {class: "d-value", text: file.lastAccess})
+                )
+                .append(
+                    $("<p>")
+                    .append(
+                        $("<span>", {class: "d-label", html:"<b>Last Modification: </b>"})
+                    )
+                    .append(
+                        $("<span>", {class: "d-value", text: file.lastMod})
+                    )
+                )
+            )
+            .append(
+                $("<p>")
+                .append(
+                    $("<span>", {class: "d-label", html:"<b>Size: </b>"})
+                )
+                .append(
+                    $("<span>", {class: "d-value", text: file.size})
+                )
+                .append(
+                    $("<p>")
+                    .append(
+                        $("<span>", {class: "d-label", html:"<b>Path: </b>"})
+                    )
+                    .append(
+                        $("<span>", {class: "d-value", text: file.path})
+                    )
+                )
+            )
+        }
     })
 }
 

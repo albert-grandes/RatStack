@@ -15,9 +15,8 @@ if(is_dir($_POST["path"])) {
     $obj->path = $_POST["path"];
     $obj->size = byteToMeasure(filesize($_POST["path"]));
     $obj->lastMod = date("F d Y H:i:s.", filemtime($_POST["path"]));
-    $obj->mtime = filemtime($_POST["path"]); //Gets file modification time
-    $obj->ctime = filectime($_POST["path"]); //Gets file modification time
-    $obj->atime = fileatime($_POST["path"]); //Gets last access time of file
+    //$obj->lastInodeTime = date("F d Y H:i:s.", filectime($_POST["path"])); //Gets file inode time
+    $obj->lastAccess = date("F d Y H:i:s.", fileatime($_POST["path"])); //Gets last access time of file
     $imageArray = array("png","jpeg","jpg","gif");
     if(in_array($fullname[1], $imageArray)) {
         $obj->imgSize = getimagesize($_POST["path"]);
@@ -25,11 +24,12 @@ if(is_dir($_POST["path"])) {
 }
 
 function byteToMeasure($b) : string {
-    $measure = ["B", "KB", "MB", "GB", "TB"];
+    //$measure = ["B", "KB", "MB", "GB", "TB"];
+    $measure = ["bytes", "KB", "MB", "GB", "TB"];
     $m = $b;
     $i = 0;
 
-    while($m > 1000) { 
+    while($m > 1000) {
         $m /= 1000;
         $i++;
     }

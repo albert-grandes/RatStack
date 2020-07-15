@@ -250,7 +250,7 @@ footer h6 {
 #folderStruct > div > span:nth-child(5) {
     width: 21.5%;
 }
-@media (max-width: 850px) {
+@media (max-width: 700px) {
     #m-structure, #m-details {
         display: none;
     }
