@@ -73,6 +73,7 @@ function loadTreeFolder() {
                         clicks++;
                         if (clicks === 1){
                             //Only one click
+                            clicks = 0;
                             clearTimeout(timer);
                             timer = setTimeout(function() {
                                 $.post("php/dirStruct.php", {
@@ -81,7 +82,6 @@ function loadTreeFolder() {
                                     if(emptyFolderCheck(folder)) {
                                         clickThis.next(".nested").toggleClass("active");
                                         clickThis.toggleClass("folder-down");
-                                        clicks = 0;
                                     }
                                 })
                             }, 300)

@@ -1,15 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RatStack</title>
-    <!--NPM Packages -->
-    <script src="node_modules/jquery/dist/jquery.js"></script>
-    <!--PHP-Forms links-->
-    <link href="src/style.css" rel="stylesheet"/>
-    <script src="src/app.js"></script>
-</head>
+<?php
+    require "html/head.php";
+?>
 <body>
     <?php
         require "html/header.php";
