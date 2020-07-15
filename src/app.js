@@ -198,24 +198,6 @@ function showDetails(pathDir) {
                     )
                 )
             )
-            .append(
-                $("<p>")
-                .append(
-                    $("<span>", {class: "d-label", html:"<b>Size: </b>"})
-                )
-                .append(
-                    $("<span>", {class: "d-value", text: file.size})
-                )
-                .append(
-                    $("<p>")
-                    .append(
-                        $("<span>", {class: "d-label", html:"<b>Path: </b>"})
-                    )
-                    .append(
-                        $("<span>", {class: "d-value", text: file.path})
-                    )
-                )
-            )
         }
     })
 }
