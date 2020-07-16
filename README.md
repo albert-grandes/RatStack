@@ -16,25 +16,27 @@ In our team we try to do a minimalist and functional **file system** based in a 
 
 ### Folder organization 📂
 - Local-FilseSystem-explorer - The root of the project
-    - data - The folder that contains the php of exercises of the pill.
-        - _employees.csv_
-        - _users.csv_
     - html - The folder that contains the php of basic elements in html to build index.php
+        - _footer.php_
         - _head.php_
         - _header.php_
+    - images - This folder have all the images used in the folder show container.
+    - node_modules - This is a folder of NPM. Inside we have JQuery and Bootstrap dependencies. [Inside .gitignore]
     - php - This folder contains all the php of the page that make orders in the server side.
-        - _deleteFolder.php_
+        - _csvReaderToHTML.php_
+        - _deleteFile.php_
         - _dirStruct.php_
         - _fileInfo.php_
         - _newFolder.php_
         - _openFile.php_
-        - _renameFolder.php_
+        - _renameFile.php_
         - _rootStruct.php_
+        - _searchEngine.php_
         - _uploadFile.php_
+    - root - This folder contains all the information that show to the user.
     - src - This folder contains the personal _js- and _css_ of the page.
         - _style.css_
         - _app.js_
-    - node_modules - This is a folder of NPM. Inside we have JQuery and Bootstrap dependencies. [Inside .gitignore]
     - _.gitignore_
     - _index.php_
     - _README.md_
