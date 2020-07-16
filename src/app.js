@@ -116,8 +116,6 @@ function loadTreeFolder() {
                 $.post("php/dirStruct.php", {
                     path: pathDir
                 }).done(checkData => {
-                    console.log(checkData)
-                    console.log($("span[data-path='"+pathDir+"']"))
                     if(!emptyFolderCheck(checkData)) {
                         $("span[data-path='"+pathDir+"']").addClass("folder-no-arrow")
                     }
@@ -137,7 +135,6 @@ function showFolder(pathDir) {
         path: pathDir
     })
     .done(function(data) {
-        console.log(data);
         //First we load the header of the table! :)
         folderTable(data, pathDir);
     })
@@ -145,8 +142,7 @@ function showFolder(pathDir) {
 
 function folderTable(data, pathDir="../") {
     let ind = 0;
-    console.log(data)
-    console.log(pathDir)
+
     $("#fs-content").empty()
     if (pathDir == "../root") {
         //Don't watch the folder to go back
@@ -362,7 +358,7 @@ function showModalContent(fileObject, id="showContent") {
 function editName(el, path) {
     const form = $(el.target.parentElement);
     const parentPath = path.split("/").splice(0, path.split("/").length - 1).join("/");
-    console.log(parentPath)
+
     $.post("php/renameFile.php", {
         path: form.children().eq(2).val(),
         name: form.children().eq(0).val(),
@@ -389,13 +385,6 @@ function deleteFile(path) {
 /************************************************************************************/
 
 /************************************************************************************/
-// S> 4. nav treefolder
-function treeFolder() {
-    console.log("treeFolder function is active! ")
-    $(".folder")
-}
-//E> 4. nav treefolder
-/************************************************************************************/
 // S> X. Helper functions
 function emptyFolderCheck(folder) {
     for(const [key, value] of Object.entries(folder))
@@ -413,7 +402,6 @@ function fileExtension(ext) {
 // Get the modal
 function allowModal() {
     let modal = $("#myModal").click(function(event){
-        console.log(event.target.id +"<-> "+ "myModal")
         if (event.target.id == "myModal") {
             modal.fadeOut()
             $("#showContent").empty();
