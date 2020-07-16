@@ -71,28 +71,19 @@ function loadTreeFolder() {
                     .click(function(){
                         const clickThis = $(this);
                         clicks++;
-                        if (clicks === 1){
-                            //Only one click
-                            clicks = 0;
-                            clearTimeout(timer);
-                            timer = setTimeout(function() {
-                                $.post("php/dirStruct.php", {
-                                    path: pathDir
-                                }).done(folder => {
-                                    if(emptyFolderCheck(folder)) {
-                                        clickThis.next(".nested").toggleClass("active");
-                                        clickThis.toggleClass("folder-down");
-                                    }
-                                })
-                            }, 300)
-                        } else {
-                            //double click
-                            clicks = 0;
-                            clearTimeout(timer);
+                        $.post("php/dirStruct.php", {
+                            path: pathDir
+                        }).done(folder => {
                             $(".folder_active").removeClass("folder_active")
-                            clickThis.addClass("folder_active");
+                            clickThis.addClass("folder_active"); 
+                            
                             showFolder(pathDir);
-                        }
+                            
+                            if(emptyFolderCheck(folder)) {
+                                clickThis.next(".nested").toggleClass("active");
+                                clickThis.toggleClass("folder-down", 200);
+                            }
+                        })
                     })
                     .dblclick(function(e){
                         e.preventDefault();
@@ -104,6 +95,16 @@ function loadTreeFolder() {
                 )
                 $(`#${id}`).append(folder)
                 addFolders(`id${key}`, fobject[key]["content"])
+       
+                $.post("php/dirStruct.php", {
+                    path: pathDir
+                }).done(checkData => {
+                    console.log(checkData)
+                    console.log($("span[data-path='"+pathDir+"']"))
+                    if(!emptyFolderCheck(checkData)) {
+                        $("span[data-path='"+pathDir+"']").addClass("folder-no-arrow")
+                    }
+                })
             }
         }
         treeFolder()
@@ -143,34 +144,21 @@ function folderTable(data) {
             .append(
                 $("<div>", {class:"fs-card " + classFile})
                 .click(function(){
-                    const clickThis = $(this);
-                    clicks++;
-                    if (clicks === 1){
-                        //Only one click
-                        clearTimeout(timer);
-                        timer = setTimeout(function() {
-                            showDetails(fileData.path);
-                            clicks = 0;
-                        }, 300)
-                    } else {
-                        //double click
-                        clicks = 0;
-                        clearTimeout(timer);
-                        if(fileData.type!="folder") {
-                            showModalContent(fileData)
-                            $("#myModal")
-                            .css("display", "flex")
-                            .hide()
-                            .fadeIn()
-                        } else {
-                            showFolder(fileData.path);
-                            //TODO activeLink correction :(
-                        }
-                    }
+                    showDetails(fileData.path);
                 })
                 .dblclick(function(e){
                     e.preventDefault();
                     //This is only for prevent dblclick action
+                    if(fileData.type!="folder") {
+                        showModalContent(fileData)
+                        $("#myModal")
+                        .css("display", "flex")
+                        .hide()
+                        .fadeIn()
+                    } else {
+                        showFolder(fileData.path);
+                        //TODO activeLink correction :(
+                    }
                 })
                 .append(
                     $("<span>").append(
