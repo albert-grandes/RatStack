@@ -174,7 +174,6 @@ function folderTable(data, pathDir="../", search = false) {
         const bar = pathDir.lastIndexOf("/")
         const repath = pathDir.slice(0,bar)
         const folderback = pathDir.slice(bar+1)
-<<<<<<< HEAD
         
         if(!search) {
             $("#fs-content")
@@ -187,13 +186,6 @@ function folderTable(data, pathDir="../", search = false) {
                     }
                 })
                 .dblclick(function(e){
-=======
-        $("#fs-content")
-        .append(
-            $("<div>", {class:"fs-card"})
-            .click(function(e) {
-                if($(window).width()<850){
->>>>>>> 6c2d3a76792f2223fb8f0e64336b4beb0416544f
                     showFolder(repath);
                     UpdateTreeFolder();
                 })
