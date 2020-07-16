@@ -122,11 +122,38 @@ function loadTreeFolder() {
                 })
             }
         }
-        treeFolder()
+        //Autosetup active dir in tree structure
+        UpdateTreeFolder();
     })
     .fail(function() {
         alert("error");
     });
+}
+
+function UpdateTreeFolder() {
+    //Clean tree space
+    $(".folder_active").removeClass("folder_active");
+    $(".active").removeClass("active");
+    $(".folder-down").removeClass("folder-down");
+
+
+    $("span[data-path='"+ $("nav").attr("data-path") +"']").addClass("folder_active");
+
+    let activeDir = $(".folder_active");
+    activeDir.toggleClass("folder-down");
+    activeDir.next(".nested").toggleClass("active");
+
+    let topFolder;
+    
+    for(let i = 0; i < 100; i++) {
+        if(!activeDir.parent().parent().hasClass("nested")) break;
+
+        topFolder = activeDir.parent().parent().prev();
+        topFolder.toggleClass("folder-down");
+        topFolder.next(".nested").toggleClass("active");
+        console.log(topFolder)
+        activeDir = topFolder;            
+    }
 }
 
 function showFolder(pathDir) {
@@ -156,6 +183,7 @@ function folderTable(data, pathDir="../") {
             $("<div>", {class:"fs-card"})
             .dblclick(function(e){
                 showFolder(repath);
+                UpdateTreeFolder();
             })
             .append(
                 $("<span>").append(
@@ -198,6 +226,7 @@ function folderTable(data, pathDir="../") {
                         .fadeIn()
                     } else {
                         showFolder(fileData.path);
+                        UpdateTreeFolder();
                         //TODO activeLink correction :(
                     }
                 })
