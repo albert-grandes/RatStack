@@ -88,7 +88,6 @@ function loadTreeFolder() {
                     .attr("data-path", fobject[key]["path"])
                     .click(function(){
                         const clickThis = $(this);
-                        clicks++;
                         $.post("php/dirStruct.php", {
                             path: pathDir
                         }).done(folder => {
