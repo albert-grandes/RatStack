@@ -63,7 +63,8 @@ $(document).ready(function(){
                 search: input.val()
             }, data => {
                 $("nav").attr("data-path", "../root");
-                folderTable(data);
+                UpdateTreeFolder();
+                folderTable(data, "../root", true);
             })
         }
     })
@@ -167,7 +168,7 @@ function showFolder(pathDir) {
     })
 }
 
-function folderTable(data, pathDir="../") {
+function folderTable(data, pathDir="../", search = false) {
     let ind = 0;
 
     $("#fs-content").empty()
@@ -178,30 +179,32 @@ function folderTable(data, pathDir="../") {
         const repath = pathDir.slice(0,bar)
         const folderback = pathDir.slice(bar+1)
         
-        $("#fs-content")
-        .append(
-            $("<div>", {class:"fs-card"})
-            .click(function(e) {
-                if($(window).width()<850){
+        if(!search) {
+            $("#fs-content")
+            .append(
+                $("<div>", {class:"fs-card"})
+                .click(function(e) {
+                    if($(window).width()<850){
+                        showFolder(repath);
+                        UpdateTreeFolder();
+                    }
+                })
+                .dblclick(function(e){
                     showFolder(repath);
                     UpdateTreeFolder();
-                }
-            })
-            .dblclick(function(e){
-                showFolder(repath);
-                UpdateTreeFolder();
-            })
-            .append(
-                $("<span>").append(
-                    $("<img>",{src: "images/folder.png"})
+                })
+                .append(
+                    $("<span>").append(
+                        $("<img>",{src: "images/folder.png"})
+                    )
+                )
+                .append(
+                    $("<span>", {text: "../" }).append(
+                        $("<span>", {class: "fsc-ext", text: "folder" })
+                    )
                 )
             )
-            .append(
-                $("<span>", {text: "../" }).append(
-                    $("<span>", {class: "fsc-ext", text: "folder" })
-                )
-            )
-        )
+        }    
     }
 
     for (const [key, file] of Object.entries(data)) {
