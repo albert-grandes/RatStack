@@ -181,6 +181,10 @@ footer h6 {
     margin-bottom: 1px;
 }
 
+.folder-no-arrow.folder-down::before {
+    margin-bottom: 1px!important;
+}
+
 /* Rotate the caret/arrow icon when clicked on (using JavaScript) */
 .folder-down::before {
     transform: rotate(45deg);
