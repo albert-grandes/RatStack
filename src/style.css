@@ -130,41 +130,60 @@ footer h6 {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     padding-inline-start: 0px;
-    margin-left: 25px;
+    overflow: hidden;
+    padding-left: 20px;
 }
+
 #folderTree li {
     list-style-type: none;
-    margin-bottom: 4px;
 }
 
 /* Style the caret/arrow */
 .folder {
+    display: block;
+    width: 5000px;
     cursor: pointer;
     user-select: none; /* Prevent text selection */
-    
+    padding: 3px 0;
+    padding-left: 3000px;
+    margin-left: -3000px;
+}
+
+.folder:hover {
+    background-color: rgb(35, 37, 35);
 }
 
 /* Create the caret/arrow with a unicode, and style it */
 .folder::before {
-    content: "\25B6";
-    color: var(--main-color);
-    font-size: 13px;
+    content: "";
+    border: solid var(--main-color);
+    border-width: 0 2px 2px 0;
     display: inline-block;
-    margin-right: 4px;
+    padding: 3px;
+    margin-right: 7px;
+    margin-bottom: 1px;
+    transform: rotate(-45deg);
+}
+
+.folder-no-arrow::before {
+    content: "";
+    border: solid var(--main-color);
+    border-width: 2px 2px 2px 2px;
+    border-radius: 50px;
+    display: inline-block;
+    padding: 3px;
+    margin-right: 7px;
+    margin-bottom: 1px;
 }
 
 /* Rotate the caret/arrow icon when clicked on (using JavaScript) */
 .folder-down::before {
-    transform: rotate(90deg);
-    margin-bottom: 4px;
+    transform: rotate(45deg);
+    margin-bottom: 3px;
 }
 
 .folder_active {
-    border-radius: 2px;
-    background-color: rgb(49, 49, 49);
-    padding: 2px 6px;
-    padding-left: 150px;
-    margin-left: -150px;
+    background-color: rgb(53, 59, 55)!important;
 }
 
 /* Hide the nested list */
