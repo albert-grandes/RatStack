@@ -30,6 +30,23 @@ $(document).ready(function(){
         form.toggle(200);
     })
 
+    $("#create-folder-btn").click(e => {
+        e.preventDefault();
+
+        const form = $("#new-folder-form");
+        const path = $("nav").attr("data-path");
+
+        $.post("php/newFolder.php", {
+            path: path,
+            name: form.children().eq(0).val()
+        }, () => { 
+            showFolder(path);
+            loadTreeFolder();
+            form.children().eq(0).val("");
+            form.toggle(200);
+        })
+    })
+
     $("#upload-file-btn").click(() => {
         const form = $("#upload-file-form");
         form.children().eq(2).val($("nav").attr("data-path"))
@@ -39,7 +56,7 @@ $(document).ready(function(){
 
     $("#search-input input").on("input", e => {
         const input = $(e.target);
-        if(input.val().length < 2) {
+        if(input.val().length < 1) {
             showFolder("../root");
         } else {
             $.post("php/searchEngine.php", {
