@@ -15,7 +15,7 @@ let timer;
 /************************************************************************************/
 // S> 2. Automatic run
 $(document).ready(function(){
-    //We have to import the data of tree folder! 
+    //We have to import the data of tree folder!
     loadTreeFolder()
     //We put the root folder when start!
     showFolder("../root")
@@ -122,13 +122,58 @@ function showFolder(pathDir) {
     .done(function(data) {
         console.log(data);
         //First we load the header of the table! :)
-        folderTable(data);
+        folderTable(data, pathDir);
     })
 }
 
-function folderTable(data) {
+function folderTable(data, pathDir="../") {
     let ind = 0;
+    console.log(data)
+    console.log(pathDir)
     $("#fs-content").empty()
+    if (pathDir=="../root") {
+        //Don't watch the folder to go back
+    } else {
+        const bar = pathDir.lastIndexOf("/")
+        const repath = pathDir.slice(0,bar)
+        const folderback = pathDir.slice(bar+1)
+        console.log(repath);
+        $("#fs-content")
+        .append(
+            $("<div>", {class:"fs-card fs-card-mobile"})
+            .click(function(){
+                const clickThis = $(this);
+                clicks++;
+                if (clicks === 1){
+                    //Only one click
+                    clearTimeout(timer);
+                    timer = setTimeout(function() {
+                        showDetails(fileData.path);
+                        clicks = 0;
+                    }, 300)
+                } else {
+                    //double click
+                    clicks = 0;
+                    clearTimeout(timer);
+                    showFolder(repath)
+                }
+            })
+            .dblclick(function(e){
+                e.preventDefault();
+                //This is only for prevent dblclick action
+            })
+            .append(
+                $("<span>").append(
+                    $("<img>",{src: "images/folder.png"})
+                )
+            )
+            .append(
+                $("<span>", {text: "../" }).append(
+                    $("<span>", {class: "fsc-ext", text: "folder" })
+                )
+            )
+        )
+    }
     for (const [key, file] of Object.entries(data)) {
         if(file.type=="dir") {
             var classFile = "fs-card-dir";
