@@ -285,6 +285,9 @@ input[name="path"] {
     cursor: pointer;
     background-color: rgb(59, 65, 59);
 }
+.fs-card-mobile {
+    display: none;
+}
 
 #folderStruct span{
     overflow: hidden;
@@ -395,7 +398,7 @@ input[name="path"] {
     /*margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid var(--main-color);
-    min-width: 20%; 
+    min-width: 20%;
     max-width: 100vw;
     max-height: 100vh;
     /* height: 60%; */
@@ -493,5 +496,14 @@ table.csv td:nth-child(even) {
     }
     nav > * {
         margin: 5px;
+    }
+    #fs-header {
+        height: unset;
+    }
+    #fs-content {
+        height: unset;
+    }
+    .fs-card-mobile {
+        display: flex;
     }
 }
