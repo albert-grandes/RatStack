@@ -181,6 +181,12 @@ function folderTable(data, pathDir="../") {
         $("#fs-content")
         .append(
             $("<div>", {class:"fs-card"})
+            .click(function(e) {
+                if($(window).width()<850){
+                    showFolder(repath);
+                    UpdateTreeFolder();
+                }
+            })
             .dblclick(function(e){
                 showFolder(repath);
                 UpdateTreeFolder();
@@ -214,6 +220,19 @@ function folderTable(data, pathDir="../") {
                 $("<div>", {class:"fs-card " + classFile})
                 .click(function(){
                     showDetails(fileData.path);
+                    if($(window).width()<850){
+                        if(fileData.type!="folder") {
+                            showModalContent(fileData)
+                            $("#myModal")
+                            .css("display", "flex")
+                            .hide()
+                            .fadeIn()
+                        } else {
+                            showFolder(fileData.path);
+                            UpdateTreeFolder();
+                            //TODO activeLink correction :(
+                        }
+                    }
                 })
                 .dblclick(function(e){
                     e.preventDefault();
