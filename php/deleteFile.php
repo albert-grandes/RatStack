@@ -1,14 +1,19 @@
 <?php
 //$_POST["path"] = "../root/Documents/Working";
 
-if(is_dir($_POST["path"])) {
-    $dir = dir($_POST["path"]);
+if(is_dir($_POST["path"])) deleteFolder($_POST["path"]);
+else unlink($_POST["path"]);
+
+function deleteFolder($path) {
+    $dir = dir($path);
 
     while(($n = $dir->read()) !== false) {
         if($n == "." || $n == "..") continue;
-        unlink($dir->path."/".$n);
+        
+        $childPath = $dir->path."/".$n;
+        if(is_dir($childPath)) deleteFolder($childPath);
+        else unlink($childPath);
     }
     
-    rmdir($_POST["path"]);
-} else unlink($_POST["path"]);
-
+    rmdir($path);
+}
