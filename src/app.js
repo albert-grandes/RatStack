@@ -151,7 +151,7 @@ function UpdateTreeFolder() {
         topFolder = activeDir.parent().parent().prev();
         topFolder.toggleClass("folder-down");
         topFolder.next(".nested").toggleClass("active");
-        console.log(topFolder)
+
         activeDir = topFolder;            
     }
 }
