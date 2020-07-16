@@ -15,7 +15,7 @@ In our team we try to do a minimalist and functional **file system** based in a 
 
 
 ### Folder organization 📂
-- Local-FilseSystem-explorer - The root of the project
+- Local-FileSystem-explorer - The root of the project
     - html - The folder that contains the php of basic elements in html to build index.php
         - _footer.php_
         - _head.php_
