@@ -482,7 +482,7 @@ table.csv td:nth-child(even) {
 }
 /*************************************************************************/
 
-@media (max-width: 700px) {
+@media (max-width: 850px) {
     #m-structure, #m-details {
         display: none;
     }
@@ -542,5 +542,12 @@ table.csv td:nth-child(even) {
     }
     .fs-card-mobile {
         display: flex;
+    }
+    .modal-content {
+        /*
+        For big content discomment
+        min-width: 60%;
+        min-height: 60%;
+        */
     }
 }
