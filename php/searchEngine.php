@@ -17,7 +17,7 @@ function pushJSON($dir, &$obj, $skip) {
         if($n == "." || $n == "..") continue;
         if(filetype($fullPath) == $skip) continue;
         if(is_dir($fullPath)) pushJSON(dir($fullPath), $obj, $skip);
-        if(strpos($n, $_POST["search"]) === 0) {
+        if(strpos(strtolower($n), strtolower($_POST["search"])) === 0) {
             $f = new stdClass();
             $f->type = filetype($fullPath);
             $f->path = $fullPath;
