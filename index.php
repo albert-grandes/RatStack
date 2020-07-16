@@ -14,10 +14,9 @@
     <nav>
         <div class="action-menu">
             <div id="new-folder-btn" class="action-btn">New Folder</div>
-            <form id="new-folder-form" class="modal-form" action="php/newFolder.php" method="post">
+            <form id="new-folder-form" class="modal-form">
                 <input type="text" name="name" autocomplete="off" required>
-                <input type="submit" value="Create">
-                <input name="path">
+                <input type="submit" id="create-folder-btn" value="Create">
             </form>
         </div>
         <div id="search-input">

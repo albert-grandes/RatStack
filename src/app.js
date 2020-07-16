@@ -30,6 +30,23 @@ $(document).ready(function(){
         form.toggle(200);
     })
 
+    $("#create-folder-btn").click(e => {
+        e.preventDefault();
+
+        const form = $("#new-folder-form");
+        const path = $("nav").attr("data-path");
+
+        $.post("php/newFolder.php", {
+            path: path,
+            name: form.children().eq(0).val()
+        }, () => { 
+            showFolder(path);
+            loadTreeFolder();
+            form.children().eq(0).val("");
+            form.toggle(200);
+        })
+    })
+
     $("#upload-file-btn").click(() => {
         const form = $("#upload-file-form");
         form.children().eq(2).val($("nav").attr("data-path"))
@@ -39,7 +56,7 @@ $(document).ready(function(){
 
     $("#search-input input").on("input", e => {
         const input = $(e.target);
-        if(input.val().length < 2) {
+        if(input.val().length < 1) {
             showFolder("../root");
         } else {
             $.post("php/searchEngine.php", {
@@ -99,8 +116,6 @@ function loadTreeFolder() {
                 $.post("php/dirStruct.php", {
                     path: pathDir
                 }).done(checkData => {
-                    console.log(checkData)
-                    console.log($("span[data-path='"+pathDir+"']"))
                     if(!emptyFolderCheck(checkData)) {
                         $("span[data-path='"+pathDir+"']").addClass("folder-no-arrow")
                     }
@@ -120,7 +135,6 @@ function showFolder(pathDir) {
         path: pathDir
     })
     .done(function(data) {
-        console.log(data);
         //First we load the header of the table! :)
         folderTable(data, pathDir);
     })
@@ -128,39 +142,20 @@ function showFolder(pathDir) {
 
 function folderTable(data, pathDir="../") {
     let ind = 0;
-    console.log(data)
-    console.log(pathDir)
+
     $("#fs-content").empty()
-    if (pathDir=="../root") {
+    if (pathDir == "../root") {
         //Don't watch the folder to go back
     } else {
         const bar = pathDir.lastIndexOf("/")
         const repath = pathDir.slice(0,bar)
         const folderback = pathDir.slice(bar+1)
-        console.log(repath);
+        
         $("#fs-content")
         .append(
-            $("<div>", {class:"fs-card fs-card-mobile"})
-            .click(function(){
-                const clickThis = $(this);
-                clicks++;
-                if (clicks === 1){
-                    //Only one click
-                    clearTimeout(timer);
-                    timer = setTimeout(function() {
-                        showDetails(fileData.path);
-                        clicks = 0;
-                    }, 300)
-                } else {
-                    //double click
-                    clicks = 0;
-                    clearTimeout(timer);
-                    showFolder(repath)
-                }
-            })
+            $("<div>", {class:"fs-card"})
             .dblclick(function(e){
-                e.preventDefault();
-                //This is only for prevent dblclick action
+                showFolder(repath);
             })
             .append(
                 $("<span>").append(
@@ -174,6 +169,7 @@ function folderTable(data, pathDir="../") {
             )
         )
     }
+
     for (const [key, file] of Object.entries(data)) {
         if(file.type=="dir") {
             var classFile = "fs-card-dir";
@@ -362,7 +358,7 @@ function showModalContent(fileObject, id="showContent") {
 function editName(el, path) {
     const form = $(el.target.parentElement);
     const parentPath = path.split("/").splice(0, path.split("/").length - 1).join("/");
-    console.log(parentPath)
+
     $.post("php/renameFile.php", {
         path: form.children().eq(2).val(),
         name: form.children().eq(0).val(),
@@ -389,13 +385,6 @@ function deleteFile(path) {
 /************************************************************************************/
 
 /************************************************************************************/
-// S> 4. nav treefolder
-function treeFolder() {
-    console.log("treeFolder function is active! ")
-    $(".folder")
-}
-//E> 4. nav treefolder
-/************************************************************************************/
 // S> X. Helper functions
 function emptyFolderCheck(folder) {
     for(const [key, value] of Object.entries(folder))
@@ -413,7 +402,6 @@ function fileExtension(ext) {
 // Get the modal
 function allowModal() {
     let modal = $("#myModal").click(function(event){
-        console.log(event.target.id +"<-> "+ "myModal")
         if (event.target.id == "myModal") {
             modal.fadeOut()
             $("#showContent").empty();
