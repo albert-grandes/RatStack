@@ -451,6 +451,12 @@ input[name="path"] {
     color: whitesmoke;
 }
 
+#showContent video {
+    max-width: 80vw;
+    max-height: 80vh;
+}
+
+
 /* The Close Button */
 .close {
     color: var(--main-color);
