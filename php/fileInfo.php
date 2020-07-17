@@ -5,7 +5,7 @@ if(is_dir($_POST["path"])) {
     $obj->name = basename($_POST["path"]);
     $obj->type = "folder";
     $obj->path = $_POST["path"];
-    $obj->size = dirSize(dir($_POST["path"]));
+    $obj->size = byteToMeasure(dirSize(dir($_POST["path"])));
     $obj->lastMod = date("F d Y H:i:s.", filemtime($_POST["path"]));
 } else {
     $fullname = explode(".", basename($_POST["path"]));
@@ -41,10 +41,13 @@ function dirSize($dir) {
     $count = 0;
     while(($n = $dir->read()) !== false) {
         if($n == "." || $n == "..") continue;
-        $count += filesize($dir->path."/".$n);
+        $path = $dir->path."/".$n;
+
+        if(is_dir($path)) $count += dirSize(dir($path));
+        else $count += filesize($path);
     }
 
-    return byteToMeasure($count);
+    return $count;
 }
 
 header("Content-Type: application/json");
