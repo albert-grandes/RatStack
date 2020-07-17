@@ -148,7 +148,7 @@ function UpdateTreeFolder() {
         topFolder.toggleClass("folder-down");
         topFolder.next(".nested").toggleClass("active");
 
-        activeDir = topFolder;            
+        activeDir = topFolder;
     }
 }
 
@@ -173,7 +173,6 @@ function folderTable(data, pathDir="../", search = false) {
         const bar = pathDir.lastIndexOf("/")
         const repath = pathDir.slice(0,bar)
         const folderback = pathDir.slice(bar+1)
-        
         if(!search) {
             $("#fs-content")
             .append(
@@ -199,7 +198,7 @@ function folderTable(data, pathDir="../", search = false) {
                     )
                 )
             )
-        }    
+        }
     }
 
     for (const [key, file] of Object.entries(data)) {
@@ -236,7 +235,6 @@ function folderTable(data, pathDir="../", search = false) {
                         } else {
                             showFolder(fileData.path);
                             UpdateTreeFolder();
-                            //TODO activeLink correction :(
                         }
                     }
                 })
@@ -252,7 +250,6 @@ function folderTable(data, pathDir="../", search = false) {
                     } else {
                         showFolder(fileData.path);
                         UpdateTreeFolder();
-                        //TODO activeLink correction :(
                     }
                 })
                 .append(
@@ -481,6 +478,7 @@ function makeDraggable() {
 }
 function allowDrop(ev) {
     ev.preventDefault();
+    ev.stopPropagation();
 }
 
 function drag(ev) {
@@ -490,26 +488,45 @@ function drag(ev) {
     ev.dataTransfer.setData("type", ev.target.getAttribute("data-type"));
     //console.log($(`#${ev.target.id}`).attr("data-path"))
 }
-
+var eventTargetPrueba;
+var count = 0;
 function drop(ev) {
-    console.log(ev.target)
+    let eventTarget = originEvent(ev.target)
     ev.preventDefault();
     const path = ev.dataTransfer.getData("path");
     const data = ev.dataTransfer.getData("type");
-    console.log(path +" "+ data)
-    console.log(ev.target.getAttribute("data-type"))
-    console.log(ev.target.getAttribute("data-path"))
-    $.post( "php/moveFile.php", {
+    $.post("php/moveFile.php", {
         pathOrigin: path,
         typeOrigin: data,
-        pathFinal: ev.target.getAttribute("data-path"),
-        typeFinal: ev.target.getAttribute("data-type")
+        pathFinal: eventTargetPrueba.getAttribute("data-path"),
+        typeFinal: eventTargetPrueba.getAttribute("data-type")
     })
     .done(function(data){
         if(data!="false") {
-            alert(data);
+            console.log(data);
+            const barPos = path.lastIndexOf("/");
+            const actualPath = path.substring(0,barPos);
+            //This empty is because sometimes the info send duplicate
+            if(count==0) {
+                count++;
+                $("#fs-content").empty()
+                showFolder(actualPath)
+            } else {
+                count=0;
+            }
         }
     })
 
     //ev.target.appendChild(document.getElementById(data));
+}
+
+function originEvent (htmlObject) {
+    if(htmlObject.getAttribute("ondrop")==null){
+        console.log(htmlObject)
+        originEvent(htmlObject.parentElement)
+    } else {
+        console.log(htmlObject)
+        eventTargetPrueba = htmlObject;
+        return htmlObject;
+    }
 }

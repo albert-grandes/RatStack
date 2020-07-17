@@ -1,23 +1,14 @@
 <?php
 if(isset($_POST["pathOrigin"]) and isset($_POST["pathFinal"])){
     if($_POST["typeFinal"]=="folder"){
-        echo rcopy($_POST["pathOrigin"], $_POST["pathFinal"]);
+        $fileBar = strrpos($_POST["pathOrigin"], '/', -1);
+        $strPos= $fileBar +1;
+        $fileName = substr($_POST["pathOrigin"], $strPos);
+        echo copy($_POST["pathOrigin"], $_POST["pathFinal"]."/" . $fileName);
+        unlink ($_POST["pathOrigin"]);
     } else {
         echo "problem";
     }
 } else {
     echo "false";
-}
-
-function rcopy($src, $dst) {
-    if (file_exists ( $dst ))
-        rrmdir ( $dst );
-    if (is_dir ( $src )) {
-        mkdir ( $dst );
-        $files = scandir ( $src );
-        foreach ( $files as $file )
-            if ($file != "." && $file != "..")
-                rcopy ( "$src/$file", "$dst/$file" );
-    } else if (file_exists ( $src ))
-        copy ( $src, $dst );
 }
