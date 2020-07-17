@@ -503,7 +503,6 @@ function drop(ev) {
     })
     .done(function(data){
         if(data!="false") {
-            console.log(data);
             const barPos = path.lastIndexOf("/");
             const actualPath = path.substring(0,barPos);
             //This empty is because sometimes the info send duplicate
@@ -522,10 +521,8 @@ function drop(ev) {
 
 function originEvent (htmlObject) {
     if(htmlObject.getAttribute("ondrop")==null){
-        console.log(htmlObject)
         originEvent(htmlObject.parentElement)
     } else {
-        console.log(htmlObject)
         eventTargetPrueba = htmlObject;
         return htmlObject;
     }
