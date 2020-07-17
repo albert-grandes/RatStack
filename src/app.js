@@ -7,7 +7,6 @@ Index:
 
 /************************************************************************************/
 //S> Variables
-let clicks = 0;
 let timer;
 //E> Variables
 /************************************************************************************/
@@ -39,7 +38,7 @@ $(document).ready(function(){
         $.post("php/newFolder.php", {
             path: path,
             name: form.children().eq(0).val()
-        }, () => { 
+        }, () => {
             showFolder(path);
             loadTreeFolder();
             form.children().eq(0).val("");
@@ -93,9 +92,7 @@ function loadTreeFolder() {
                         }).done(folder => {
                             $(".folder_active").removeClass("folder_active")
                             clickThis.addClass("folder_active"); 
-                            
                             showFolder(pathDir);
-                            
                             if(emptyFolderCheck(folder)) {
                                 clickThis.next(".nested").toggleClass("active");
                                 clickThis.toggleClass("folder-down", 200);
@@ -112,7 +109,6 @@ function loadTreeFolder() {
                 )
                 $(`#${id}`).append(folder)
                 addFolders(`id${key}`, fobject[key]["content"])
-       
                 $.post("php/dirStruct.php", {
                     path: pathDir
                 }).done(checkData => {
@@ -152,7 +148,7 @@ function UpdateTreeFolder() {
         topFolder.toggleClass("folder-down");
         topFolder.next(".nested").toggleClass("active");
 
-        activeDir = topFolder;            
+        activeDir = topFolder;
     }
 }
 
@@ -177,7 +173,6 @@ function folderTable(data, pathDir="../", search = false) {
         const bar = pathDir.lastIndexOf("/")
         const repath = pathDir.slice(0,bar)
         const folderback = pathDir.slice(bar+1)
-        
         if(!search) {
             $("#fs-content")
             .append(
@@ -203,7 +198,7 @@ function folderTable(data, pathDir="../", search = false) {
                     )
                 )
             )
-        }    
+        }
     }
 
     for (const [key, file] of Object.entries(data)) {
@@ -220,6 +215,14 @@ function folderTable(data, pathDir="../", search = false) {
             $("#fs-content")
             .append(
                 $("<div>", {class:"fs-card " + classFile})
+                /*DRAG AND DROP ATTR*/
+                .attr("data-path", fileData.path)
+                .attr("data-type", fileData.type)
+                .attr("ondrop", "drop(event)")
+                .attr("ondragover", "allowDrop(event)")
+                .attr("draggable", "true")
+                .attr("ondragstart", "drag(event)")
+                /*DRAG AND DROP ATTR*/
                 .click(function(){
                     showDetails(fileData.path);
                     if($(window).width()<850){
@@ -232,7 +235,6 @@ function folderTable(data, pathDir="../", search = false) {
                         } else {
                             showFolder(fileData.path);
                             UpdateTreeFolder();
-                            //TODO activeLink correction :(
                         }
                     }
                 })
@@ -248,7 +250,6 @@ function folderTable(data, pathDir="../", search = false) {
                     } else {
                         showFolder(fileData.path);
                         UpdateTreeFolder();
-                        //TODO activeLink correction :(
                     }
                 })
                 .append(
@@ -291,6 +292,7 @@ function folderTable(data, pathDir="../", search = false) {
             })
         })
     }
+    makeDraggable()
 }
 
 function showDetails(pathDir) {
@@ -464,4 +466,64 @@ function allowModal() {
         modal.fadeOut();
         $("#showContent").empty();
     })
+}
+/************************************************************************************/
+// S> DRAG AND DROP FUNCTIONS
+function makeDraggable() {
+    $("#fs-content")
+    .attr("ondrop", "drop(event)")
+    .attr("ondragover", "allowDrop(event)")
+    .attr("draggable", "true")
+    .attr("ondragstart", "drag(event)")
+}
+function allowDrop(ev) {
+    ev.preventDefault();
+    ev.stopPropagation();
+}
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+    console.log(ev.target.getAttribute("data-path"))
+    ev.dataTransfer.setData("path", ev.target.getAttribute("data-path"));
+    ev.dataTransfer.setData("type", ev.target.getAttribute("data-type"));
+    //console.log($(`#${ev.target.id}`).attr("data-path"))
+}
+var eventTargetPrueba;
+var count = 0;
+function drop(ev) {
+    let eventTarget = originEvent(ev.target)
+    ev.preventDefault();
+    const path = ev.dataTransfer.getData("path");
+    const data = ev.dataTransfer.getData("type");
+    $.post("php/moveFile.php", {
+        pathOrigin: path,
+        typeOrigin: data,
+        pathFinal: eventTargetPrueba.getAttribute("data-path"),
+        typeFinal: eventTargetPrueba.getAttribute("data-type")
+    })
+    .done(function(data){
+        if(data!="false") {
+            const barPos = path.lastIndexOf("/");
+            const actualPath = path.substring(0,barPos);
+            //This empty is because sometimes the info send duplicate
+            if(count==0) {
+                count++;
+                $("#fs-content").empty()
+                showFolder(actualPath)
+            } else {
+                count=0;
+            }
+        }
+    })
+
+    //ev.target.appendChild(document.getElementById(data));
+}
+
+function originEvent (htmlObject) {
+    if(htmlObject.getAttribute("ondrop")==null){
+        originEvent(htmlObject.parentElement)
+    } else {
+        eventTargetPrueba = htmlObject;
+        return htmlObject;
+    }
 }
