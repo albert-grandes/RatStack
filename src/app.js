@@ -268,7 +268,7 @@ function folderTable(data, pathDir="../", search = false) {
                     $("<span>", {text: fileData.lastMod})
                 )
                 .append(
-                    $("<span>", {class: "fsc-edit", text: "✎"}).click(e => {
+                    $("<span>", {class: "fsc-edit", text: "🖉"}).click(e => {
                         const target = $(e.target);
                         target.siblings("form").toggle(200);
                         target.siblings("form").children("input").eq(2).hide()
