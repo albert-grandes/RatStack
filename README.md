@@ -53,8 +53,8 @@ _This are the tools of external that I use_
 
 
 ## Authors ✒️
-* **A.Grandes.R** - *All the work of design and code* - [Repository](https://code.assemblerschool.com/albert-grandes/)
-* **Eloy Rodriguez** - *All the work of design and code* - [Repository](https://code.assemblerschool.com/eloy-rodriguez/)
+* **A.Grandes.R** - *All the work of design and code* - [Repository](https://github.com/albert-grandes)
+* **Eloy Rodriguez** - *All the work of design and code* - [Repository](https://github.com/eloyrdev)
 
 
 
